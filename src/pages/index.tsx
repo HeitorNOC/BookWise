@@ -1,5 +1,7 @@
+import Login from "./Login";
+
 export default function Home() {
   return (
-    <div>Hello World</div>
+    <Login />
   )
 }
