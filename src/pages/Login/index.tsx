@@ -12,7 +12,11 @@ export default function Login() {
   const router = useRouter()
 
   async function handleConnectGoogle() {
-    await signIn('google')
+    try {
+      await signIn('google')
+    } catch (err)  {
+      console.log(err)
+    }
     
   }
 
