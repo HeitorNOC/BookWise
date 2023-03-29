@@ -52,4 +52,5 @@ export const LoginType = styled('div', {
   backgroundColor: "$gray600",
   marginBottom: 16,
   borderRadius: 8,
+  cursor: "pointer"
 })
