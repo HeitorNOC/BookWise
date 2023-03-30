@@ -5,21 +5,43 @@ import Github from '../../assets/images/akar-icons_github-fill.png'
 import Rocket from '../../assets/images/RocketLaunch.png'
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import { api } from "@/lib/axios";
 
 
 export default function Login() {
   const router = useRouter()
+  const session =  useSession()
+
+  async function handleLogin() {
+    console.log(session.status)
+    if (session.status == 'authenticated') {
+      console.log('oi')
+      try {
+        await api.post('/users', {
+        name: session.data?.user.name,
+        avatar_url: session.data?.user.avatar_url,
+        email: session.data.user.email
+      })
+      } catch (e) {
+        console.log(e)
+      }
+      
+    }
+  }
 
   async function handleConnectGoogle() {
     try {
       await signIn('google')
+      
     } catch (err)  {
       console.log(err)
     }
-    
+    if (session.status != 'unauthenticated')
+    console.log(session.status)
+    await router.push('/home')
   }
-
+  
   async function handleConnectGithub() {
     await signIn('github')
     
@@ -28,7 +50,7 @@ export default function Login() {
   function handleVisitor() {
     router.push("/home")
   }
-
+  
   return (
     <Container>
       <Left>

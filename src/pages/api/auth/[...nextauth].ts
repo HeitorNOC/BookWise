@@ -16,7 +16,8 @@ export default NextAuth({
         params: {
           prompt: "consent",
           access_type: "offline",
-          response_type: "code"
+          response_type: "code",
+          scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
         }
       },
       profile: (profile: GoogleProfile) => {
@@ -26,7 +27,9 @@ export default NextAuth({
             email: profile.email,
             avatar_url: profile.picture
         }
-      }
+      },
+      allowDangerousEmailAccountLinking: true,
+      
       
     }),
     GitHubProvider({
@@ -34,13 +37,11 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET ?? ""
     })
   ],
+  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     async signIn({ account }) {
       console.log(account)
-      if (account?.provider === "google") {
-        return '/login/?error=permissions'
-      }
       return true // Do different verification for other providers that don't have `email_verified`
     },
     async session({ session, user }) {
@@ -51,3 +52,4 @@ export default NextAuth({
     }
   }
 })
+
