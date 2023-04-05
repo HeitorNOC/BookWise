@@ -60,7 +60,7 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ account }) {
-        console.log(account)
+        
         return true // Do different verification for other providers that don't have `email_verified`
       
     },
