@@ -60,12 +60,12 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ account }) {
-      if (!account) {
-        return '/login/error=?'
-      } else {
-        return '/home' // Do different verification for other providers that don't have `email_verified`
-      }
+        console.log(account)
+        return true // Do different verification for other providers that don't have `email_verified`
+      
     },
+
+    
     async session({ session, user }) {
       return {
         ...session,

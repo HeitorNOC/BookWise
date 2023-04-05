@@ -4,49 +4,31 @@ import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
 import Rocket from '../../assets/images/RocketLaunch.png'
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { signIn, useSession } from 'next-auth/react'
-import { api } from "@/lib/axios";
 
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 export default function Login() {
-  const router = useRouter()
-  const session =  useSession()
 
-  async function handleLogin() {
-    console.log(session.status)
-    if (session.status == 'authenticated') {
-      console.log('oi')
-      try {
-        await api.post('/users', {
-        name: session.data?.user.name,
-        avatar_url: session.data?.user.avatar_url
-      })
-      } catch (e) {
-        console.log(e)
-      }
-      
-    }
-  }
-
+  const session = useSession()
+  
   async function handleConnectGoogle() {
-    try {
-      await signIn('google')
-      
-      
-    } catch (err)  {
-      console.log(err)
-    }
+      if (session.status != 'unauthenticated') {
+        await signOut()
+        
+      }
+      await signIn('google', { callbackUrl: '/home' }) 
   }
   
   async function handleConnectGithub() {
-    await signIn('github')
-    
-    
+    if (session.status != 'unauthenticated') {
+      await signOut()
+      
+    }
+    await signIn('github', { callbackUrl: '/home' }) 
   }
   
-  function handleVisitor() {
-    router.push("/home")
+  async function handleVisitor() {
+    await signOut({callbackUrl: '/home'})
   }
   
   return (

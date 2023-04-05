@@ -4,6 +4,7 @@ export default function Home() {
   const session = useSession()
 
   const isUserLogedIn = session.status != 'unauthenticated'
+  
 
   return (
     <>
