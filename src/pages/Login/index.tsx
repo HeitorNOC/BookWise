@@ -20,8 +20,7 @@ export default function Login() {
       try {
         await api.post('/users', {
         name: session.data?.user.name,
-        avatar_url: session.data?.user.avatar_url,
-        email: session.data.user.email
+        avatar_url: session.data?.user.avatar_url
       })
       } catch (e) {
         console.log(e)
@@ -34,16 +33,15 @@ export default function Login() {
     try {
       await signIn('google')
       
+      
     } catch (err)  {
       console.log(err)
     }
-    if (session.status != 'unauthenticated')
-    console.log(session.status)
-    await router.push('/home')
   }
   
   async function handleConnectGithub() {
     await signIn('github')
+    
     
   }
   
