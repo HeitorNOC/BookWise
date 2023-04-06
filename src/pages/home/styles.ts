@@ -26,7 +26,13 @@ export const Sidebar = styled('div', {
 })
 
 export const Content = styled('div', {
-
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  height: '100vh',
+  paddingTop: 72,
+  paddingLeft: 96,
+  paddingRight: 64
 })
 
 export const Right = styled('div', {
@@ -40,7 +46,12 @@ export const SideContentUpper = styled('div', {
   gap: 64,
 
   '.items': {
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
+
     div: {
+
       display: "flex",
       alignItems: "center",
       padding: '8px 0px',
@@ -55,7 +66,7 @@ export const SideContentUpper = styled('div', {
 export const SideContentDown = styled('div', {
   div: {
     display: "flex",
-    
+
     padding: 4,
     gap: 12,
 
@@ -72,19 +83,79 @@ export const SideContentDown = styled('div', {
 })
 
 export const ContentTitle = styled('div', {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 
+  div: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 40,
+    gap: 12,
+
+    color: "$green100",
+
+    p: {
+      fontSize: 24,
+      color: "$white",
+      fontWeight: 700
+    }
+  }
 })
 
 export const BookSection = styled('div', {
+  display: "flex",
+  
+  flexDirection: "column",
+  padding: 24,
+  background: "$gray700",
+  borderRadius: 8,
 
+  maxWidth: 608
 })
 
 export const BookSectionProfile = styled('div', {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: 32,
 
+  div: {
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+
+    div: {
+      display: 'grid',
+      alignItems: "center",
+      justifyContent: "center",
+      marginLeft: 16,
+      
+      h4: {
+        color: "$gray100"
+      },
+
+      p: {
+        fontSize: 14,
+        color: "$gray400"
+      }
+    }
+  }
 })
 
 export const BookSectionDesc = styled('div', {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 
+  gap: 20,
+
+  div: {
+    p: {
+      flexWrap: "wrap",
+      fontSize: 14
+    }
+  }
 })
 
 export const RightDesc = styled('div', {
