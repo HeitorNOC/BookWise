@@ -3,7 +3,8 @@ import { styled } from "@stitches/react";
 export const Container = styled('div', {
   display: "flex",
   alignItems: "center",
-  overflow: "hidden"
+  justifyContent: "center",
+  width: 1440
 })
 
 export const Sidebar = styled('div', {
@@ -37,7 +38,13 @@ export const Content = styled('div', {
 })
 
 export const Right = styled('div', {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
 
+  height: '100vh',
+  paddingTop: 146,
+  paddingRight: 96,
 })
 
 export const SideContentUpper = styled('div', {
@@ -115,7 +122,7 @@ export const BookSection = styled('div', {
   background: "$gray700",
   borderRadius: 8,
 
-  maxWidth: 608,
+ maxWidth: 608,
 
   marginBottom: 12
 })
@@ -171,9 +178,60 @@ export const BookSectionDesc = styled('div', {
 })
 
 export const RightDesc = styled('div', {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: 324,
+  marginBottom: 20,
+  
+  p: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
 
+    fontSize: 14,
+    color: "$gray100"
+  },
+
+  '.arrow': {
+    marginRight: 20,
+    fontWeight: 700,
+    color: "$purple100"
+  }
+ 
 })
 
 export const RightBook = styled('div', {
+  display: "flex",
+  marginBottom: 12,
+  justifyContent: "center",
+  background: "$gray700",
+  padding: "16px 20px",
+  borderRadius: 8,
 
+  h4: {
+    fontWeight: 700,
+    fontSize: 16,
+    color: "$gray100"
+  },
+
+  p: {
+    fontSize: 14,
+    color: "$gray400"
+  },
+
+
+    '.star': {
+      display: "flex"
+    },
+
+    '.flex': {
+      display: "flex",
+      flexDirection: "column",
+      marginLeft: 20,
+
+      div: {
+        marginBottom: 34
+      }
+    }
 })

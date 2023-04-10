@@ -2,9 +2,10 @@ import { useSession } from "next-auth/react";
 import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar } from "./styles";
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, ChartLineUp, SignIn, Star } from '@phosphor-icons/react'
+import { Binoculars, CaretRight, ChartLineUp, SignIn, Star } from '@phosphor-icons/react'
 import Avatar from '../../assets/images/Avatar.png'
 import Hobbit from '../../assets/images/o-hobbit.png'
+import Book from '../../assets/images/Book.png'
 
 export default function Home() {
   const session = useSession()
@@ -66,16 +67,16 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9"/>
-                    <Star size={16} weight="fill" color="#8381D9"/>
-                    <Star size={16} weight="fill" color="#8381D9"/>
-                    <Star size={16} weight="fill" color="#8381D9"/>
-                    <Star size={16} weight="fill" color="#8381D9"/>
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
                   </div>
 
                 </BookSectionProfile>
                 <BookSectionDesc>
-                  <Image src={Hobbit} alt="book" width={100} height={152}/>
+                  <Image src={Hobbit} alt="book" width={100} height={152} />
                   <div>
                     <div>
                       <h4>O Hobbit</h4>
@@ -88,10 +89,24 @@ export default function Home() {
             </Content>
             <Right>
               <RightDesc>
-
+                <p>Livros populares</p>
+                <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               <RightBook>
-
+                <Image src={Book} alt="Book" width={64} height={94} />
+                <div className="flex">
+                  <div>
+                    <h4>A revolução dos bichos</h4>
+                    <p>George Orwell</p>
+                  </div>
+                  <div className="star">
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                  </div>
+                </div>
               </RightBook>
             </Right>
           </Container>
