@@ -66,19 +66,21 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="star">
-                    <Star size={24} weight="fill" />
-                    <Star size={24} weight="fill" />
-                    <Star size={24} weight="fill" />
-                    <Star size={24} weight="fill" />
-                    <Star size={24} weight="fill" />
+                    <Star size={16} weight="fill" color="#8381D9"/>
+                    <Star size={16} weight="fill" color="#8381D9"/>
+                    <Star size={16} weight="fill" color="#8381D9"/>
+                    <Star size={16} weight="fill" color="#8381D9"/>
+                    <Star size={16} weight="fill" color="#8381D9"/>
                   </div>
 
                 </BookSectionProfile>
                 <BookSectionDesc>
                   <Image src={Hobbit} alt="book" width={100} height={152}/>
                   <div>
-                    <h4>O Hobbit</h4>
-                    <p><span>J.R.R. Tolkien</span></p>
+                    <div>
+                      <h4>O Hobbit</h4>
+                      <p>J.R.R. Tolkien</p>
+                    </div>
                     <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
                   </div>
                 </BookSectionDesc>

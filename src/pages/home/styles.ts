@@ -28,7 +28,8 @@ export const Sidebar = styled('div', {
 export const Content = styled('div', {
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
+  alignItems: "flex-start",
+  
   height: '100vh',
   paddingTop: 72,
   paddingLeft: 96,
@@ -85,8 +86,9 @@ export const SideContentDown = styled('div', {
 export const ContentTitle = styled('div', {
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
-
+  alignItems: "flex-start",
+  marginBottom: 16,
+  
   div: {
     display: "flex",
     alignItems: "center",
@@ -99,7 +101,8 @@ export const ContentTitle = styled('div', {
     p: {
       fontSize: 24,
       color: "$white",
-      fontWeight: 700
+      fontWeight: 700,
+      
     }
   }
 })
@@ -132,7 +135,9 @@ export const BookSectionProfile = styled('div', {
       marginLeft: 16,
       
       h4: {
-        color: "$gray100"
+        color: "$gray100",
+        fontSize: 16,
+        fontWeight: 400
       },
 
       p: {
@@ -145,15 +150,20 @@ export const BookSectionProfile = styled('div', {
 
 export const BookSectionDesc = styled('div', {
   display: "flex",
-  alignItems: "center",
   justifyContent: "center",
+  
 
   gap: 20,
 
   div: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: 20,
     p: {
       flexWrap: "wrap",
-      fontSize: 14
+      fontSize: 14,
+      lineHeight: "160%",
+      color: "$gray300"
     }
   }
 })
