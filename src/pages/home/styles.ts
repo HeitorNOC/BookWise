@@ -115,7 +115,9 @@ export const BookSection = styled('div', {
   background: "$gray700",
   borderRadius: 8,
 
-  maxWidth: 608
+  maxWidth: 608,
+
+  marginBottom: 12
 })
 
 export const BookSectionProfile = styled('div', {
