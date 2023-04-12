@@ -1,8 +1,10 @@
 import { useSession } from "next-auth/react";
-import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar } from "./styles";
+import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, DialogDescription, Fieldset, Label, Input, Flex, IconButton } from "./styles";
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
 import { Binoculars, CaretRight, ChartLineUp, SignIn, Star } from '@phosphor-icons/react'
+import * as Dialog from '@radix-ui/react-dialog';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import Avatar from '../../assets/images/Avatar.png'
 import Hobbit from '../../assets/images/o-hobbit.png'
 import Book from '../../assets/images/Book.png'
@@ -11,6 +13,10 @@ export default function Home() {
   const session = useSession()
 
   const isUserLogedIn = session.status != 'unauthenticated'
+
+  function handleLogin() {
+
+  }
 
 
   return (
@@ -43,8 +49,45 @@ export default function Home() {
               </SideContentUpper>
               <SideContentDown>
                 <div>
-                  <p>Fazer login </p>
-                  <SignIn size={24} />
+
+
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                      <div className="login">
+                        <Button variant="login">Fazer Login</Button>
+                        <SignIn size={24} color="#50B2C0"/>
+                        
+                      </div>
+
+                    </Dialog.Trigger>
+                    <Dialog.Portal>
+                      <DialogOverlay />
+                      <DialogContent>
+                        <DialogTitle>Fazer Login</DialogTitle>
+                        <DialogDescription>
+                          Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                        <Fieldset>
+                          <Label htmlFor="name">Name</Label>
+                          <Input id="name" defaultValue="Pedro Duarte" />
+                        </Fieldset>
+                        <Fieldset>
+                          <Label htmlFor="username">Username</Label>
+                          <Input id="username" defaultValue="@peduarte" />
+                        </Fieldset>
+                        <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
+                          <Dialog.Close asChild>
+                            <Button variant="green">Save changes</Button>
+                          </Dialog.Close>
+                        </Flex>
+                        <Dialog.Close asChild>
+                          <IconButton aria-label="Close">
+                            <Cross2Icon />
+                          </IconButton>
+                        </Dialog.Close>
+                      </DialogContent>
+                    </Dialog.Portal>
+                  </Dialog.Root>
                 </div>
               </SideContentDown>
             </Sidebar>
