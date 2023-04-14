@@ -13,6 +13,8 @@ import Github from '../../assets/images/akar-icons_github-fill.png'
 export default function Home() {
   const session = useSession()
 
+  
+
   const isUserLogedIn = session.status != 'unauthenticated'
 
   async function handleConnectGoogle() {
@@ -31,6 +33,10 @@ export default function Home() {
     await signIn('github', { callbackUrl: '/home' })
   }
 
+  async function handleLogOut() {
+    await signOut()
+  }
+
 
   return (
     <>
@@ -43,7 +49,7 @@ export default function Home() {
                   <Image src={Logo} alt="logo" />
                 </div>
                 <div className="items">
-                  <div>
+                  <div className="selected">
                     <ChartLineUp size={24} />
                     <p> Início</p>
                   </div>
@@ -62,7 +68,7 @@ export default function Home() {
                 <div className="loged">
                   <Image src={session.data.user.avatar_url} alt="avatar" width={32} height={32} style={{ borderRadius: 999 }}/>
                   <p>{session.data.user.name.split(' ', 1)}</p>
-                 <SignOut size={20} color="#F75A68" style={{ cursor: "pointer" }}/>
+                 <SignOut size={20} color="#F75A68" style={{ cursor: "pointer" }} onClick={handleLogOut}/>
                 </div>
               </SideContentDown>
             </Sidebar>
@@ -73,8 +79,38 @@ export default function Home() {
                   <p> Início</p>
                 </div>
 
-                <p>Avaliações mais recentes</p>
+                <p>Sua última leitura</p>
               </ContentTitle>
+              <BookSection>
+                <BookSectionProfile>
+                  <div>
+                    <Image src={Avatar} alt="avatar" />
+                    <div>
+                      <h4>Jaxson Dias</h4>
+                      <p>Hoje</p>
+                    </div>
+                  </div>
+                  <div className="star">
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                    <Star size={16} weight="fill" color="#8381D9" />
+                  </div>
+
+                </BookSectionProfile>
+                <BookSectionDesc>
+                  <Image src={Hobbit} alt="book" width={100} height={152} />
+                  <div>
+                    <div>
+                      <h4>O Hobbit</h4>
+                      <p>J.R.R. Tolkien</p>
+                    </div>
+                    <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
+                  </div>
+                </BookSectionDesc>
+              </BookSection>
+              <p style={{ marginBottom:16, marginTop: 28 }}>Avaliações mais recentes</p>
               <BookSection>
                 <BookSectionProfile>
                   <div>
@@ -136,7 +172,7 @@ export default function Home() {
                   <Image src={Logo} alt="logo" />
                 </div>
                 <div className="items">
-                  <div>
+                  <div className="selected">
                     <ChartLineUp size={24} />
                     <p> Início</p>
                   </div>

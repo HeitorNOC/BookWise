@@ -60,13 +60,31 @@ export const SideContentUpper = styled('div', {
     flexDirection: "column",
     gap: 16,
 
+    '.selected': {
+      color: "$gray100",
+
+      '&::before': {
+        content: `''`,
+        display: 'block',
+        backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
+        position: 'absolute',
+        left: '70px',
+        top: 'calc(20% - 33px/2)',
+        width: 4,
+        height: 24,
+        borderRadius: 'inherit',
+        zIndex: 99,
+      }
+    },
+
     div: {
 
       display: "flex",
       alignItems: "center",
       padding: '8px 0px',
       gap: 12,
-      color: "$gray400"
+      color: "$gray400",
+      cursor: "pointer",
 
 
     }
@@ -85,13 +103,14 @@ export const SideContentDown = styled('div', {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    
+    cursor: "pointer",
   },
 
   '.loged': {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+
     gap: 12,
 
     p: {
@@ -291,7 +310,7 @@ export const DialogTitle = styled(Dialog.Title, {
   alignItems: "center",
   justifyContent: "center",
   marginBottom: 40,
-  
+
 });
 
 export const Button = styled('button', {
@@ -305,7 +324,7 @@ export const Button = styled('button', {
   lineHeight: 1,
   fontWeight: 500,
   height: 35,
-  
+
   //gap: 12,
 
 
@@ -325,13 +344,13 @@ export const Button = styled('button', {
         '&:focus': { boxShadow: `0 0 0 2px ${green.green7}` },
       },
       login: {
-        
+
         fontWeight: 700,
         fontSize: 16,
         lineHeight: '160%',
         color: "$gray200",
         marginRight: 12
-        
+
       }
     },
   },
