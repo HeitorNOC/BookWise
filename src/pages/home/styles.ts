@@ -85,7 +85,19 @@ export const SideContentDown = styled('div', {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    cursor: "pointer"
+    
+  },
+
+  '.loged': {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+
+    p: {
+      color: "$gray200",
+      fontSize: 14
+    }
   }
 
 })
