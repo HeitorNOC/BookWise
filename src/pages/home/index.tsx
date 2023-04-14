@@ -1,5 +1,5 @@
-import { useSession } from "next-auth/react";
-import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, DialogDescription, Fieldset, Label, Input, Flex, IconButton } from "./styles";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "./styles";
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
 import { Binoculars, CaretRight, ChartLineUp, SignIn, Star } from '@phosphor-icons/react'
@@ -8,14 +8,28 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import Avatar from '../../assets/images/Avatar.png'
 import Hobbit from '../../assets/images/o-hobbit.png'
 import Book from '../../assets/images/Book.png'
+import Google from '../../assets/images/logos_google-icon.png'
+import Github from '../../assets/images/akar-icons_github-fill.png'
 
 export default function Home() {
   const session = useSession()
 
   const isUserLogedIn = session.status != 'unauthenticated'
 
-  function handleLogin() {
+  async function handleConnectGoogle() {
+    if (session.status != 'unauthenticated') {
+      await signOut()
 
+    }
+    await signIn('google', { callbackUrl: '/home' })
+  }
+
+  async function handleConnectGithub() {
+    if (session.status != 'unauthenticated') {
+      await signOut()
+
+    }
+    await signIn('github', { callbackUrl: '/home' })
   }
 
 
@@ -55,31 +69,33 @@ export default function Home() {
                     <Dialog.Trigger asChild>
                       <div className="login">
                         <Button variant="login">Fazer Login</Button>
-                        <SignIn size={24} color="#50B2C0"/>
-                        
+                        <SignIn size={24} color="#50B2C0" />
+
                       </div>
 
                     </Dialog.Trigger>
                     <Dialog.Portal>
                       <DialogOverlay />
                       <DialogContent>
-                        <DialogTitle>Fazer Login</DialogTitle>
-                        <DialogDescription>
-                          Make changes to your profile here. Click save when you're done.
-                        </DialogDescription>
+                        <DialogTitle>Faça login para deixar sua avaliação</DialogTitle>
+
                         <Fieldset>
-                          <Label htmlFor="name">Name</Label>
-                          <Input id="name" defaultValue="Pedro Duarte" />
-                        </Fieldset>
-                        <Fieldset>
-                          <Label htmlFor="username">Username</Label>
-                          <Input id="username" defaultValue="@peduarte" />
-                        </Fieldset>
-                        <Flex css={{ marginTop: 25, justifyContent: 'flex-end' }}>
                           <Dialog.Close asChild>
-                            <Button variant="green">Save changes</Button>
+                            <div onClick={handleConnectGoogle}>
+                              <Image src={Google} alt="google" />
+                              <h4>Entrar com Google</h4>
+                            </div>
                           </Dialog.Close>
-                        </Flex>
+                        </Fieldset>
+                        <Fieldset>
+                          <Dialog.Close asChild>
+                            <div onClick={handleConnectGithub}>
+                              <Image src={Github} alt="github" />
+                              <h4>Entrar com Github</h4>
+                            </div>
+                          </Dialog.Close>
+                        </Fieldset>
+
                         <Dialog.Close asChild>
                           <IconButton aria-label="Close">
                             <Cross2Icon />

@@ -254,7 +254,7 @@ export const DialogOverlay = styled(Dialog.Overlay, {
 });
 
 export const DialogContent = styled(Dialog.Content, {
-  backgroundColor: 'white',
+  backgroundColor: '$gray700',
   borderRadius: 6,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   position: 'fixed',
@@ -262,28 +262,25 @@ export const DialogContent = styled(Dialog.Content, {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '90vw',
-  maxWidth: '450px',
-  maxHeight: '85vh',
-  padding: 25,
+  maxWidth: '516px',
+  maxHeight: '67vh',
+  padding: "56px 72px",
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   '&:focus': { outline: 'none' },
+  fontFamily: 'Nunito, sans-serif'
 });
 
 export const DialogTitle = styled(Dialog.Title, {
   margin: 0,
   fontWeight: 500,
-  color: mauve.mauve12,
-  fontSize: 17,
+  color: "$gray200",
+  fontSize: 16,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 40,
+  
 });
-
-export const DialogDescription = styled(Dialog.Description, {
-  margin: '10px 0 20px',
-  color: mauve.mauve11,
-  fontSize: 15,
-  lineHeight: 1.5,
-});
-
-export const Flex = styled('div', { display: 'flex' });
 
 export const Button = styled('button', {
   all: 'unset',
@@ -356,29 +353,26 @@ export const Fieldset = styled('fieldset', {
   gap: 20,
   alignItems: 'center',
   marginBottom: 15,
+
+  div: {
+    display: "flex",
+    alignItems: "center",
+    gap: 20,
+    background: "$gray600",
+    paddingRight: 139,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 24,
+
+    cursor: "pointer",
+
+    h4: {
+      color: "$gray200",
+      fontSize: 18,
+      fontWeight: 500
+    }
+  }
 });
 
-export const Label = styled('label', {
-  fontSize: 15,
-  color: violet.violet11,
-  width: 90,
-  textAlign: 'right',
-});
 
-export const Input = styled('input', {
-  all: 'unset',
-  width: '100%',
-  flex: '1',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: 4,
-  padding: '0 10px',
-  fontSize: 15,
-  lineHeight: 1,
-  color: violet.violet11,
-  boxShadow: `0 0 0 1px ${violet.violet7}`,
-  height: 35,
 
-  '&:focus': { boxShadow: `0 0 0 2px ${violet.violet8}` },
-});
