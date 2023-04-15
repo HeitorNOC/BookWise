@@ -6,9 +6,10 @@ import Rocket from '../../assets/images/RocketLaunch.png'
 import Image from "next/image";
 
 import { signIn, signOut, useSession } from 'next-auth/react'
+import {  useRouter } from "next/router";
 
 export default function Login() {
-
+  const router = useRouter()
   const session = useSession()
   
   async function handleConnectGoogle() {
@@ -28,7 +29,7 @@ export default function Login() {
   }
   
   async function handleVisitor() {
-    await signOut({callbackUrl: '/home'})
+    router.push('/home')
   }
   
   return (

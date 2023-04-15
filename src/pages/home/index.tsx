@@ -6,14 +6,32 @@ import { Binoculars, CaretRight, ChartLineUp, SignIn, SignOut, Star, User, X } f
 import * as Dialog from '@radix-ui/react-dialog';
 import Avatar from '../../assets/images/Avatar.png'
 import Hobbit from '../../assets/images/o-hobbit.png'
-import Book from '../../assets/images/Book.png'
+//import Book from '../../assets/images/Book.png'
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
+import { useState, useEffect } from "react";
+import { prisma } from "@/lib/prisma";
+import { api } from "@/lib/axios";
+import { Book } from "@prisma/client";
+
+
 
 export default function Home() {
+  const [books, setBooks] = useState<Array<Book>>();
+
   const session = useSession()
 
-  
+  useEffect(() => {
+    async function fetchBooks() {
+      
+      const { data } = await api.get('/books');
+      setBooks(data)
+    }
+
+    fetchBooks();
+  }, []);
+    
+  console.log(books)
 
   const isUserLogedIn = session.status != 'unauthenticated'
 
@@ -147,7 +165,7 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               <RightBook>
-                <Image src={Book} alt="Book" width={64} height={94} />
+                <Image src={Hobbit} alt="Book" width={64} height={94} />
                 <div className="flex">
                   <div>
                     <h4>A revolução dos bichos</h4>
@@ -274,7 +292,7 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               <RightBook>
-                <Image src={Book} alt="Book" width={64} height={94} />
+                <Image src={Hobbit} alt="Book" width={64} height={94} />
                 <div className="flex">
                   <div>
                     <h4>A revolução dos bichos</h4>
