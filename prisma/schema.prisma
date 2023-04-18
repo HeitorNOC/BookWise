@@ -60,7 +60,7 @@ model Rating {
   rate        Int
   description String
 
-  created_at String @default(dbgenerated("now()")) @map("created_at")
+  created_at String
 
   book    Book   @relation(fields: [book_id], references: [id])
   book_id String

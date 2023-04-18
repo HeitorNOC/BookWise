@@ -70,6 +70,7 @@ async function main() {
         book: {
           connect: { id: rating.book_id },
         },
+        created_at: String(new Date())
       },
     })
   })

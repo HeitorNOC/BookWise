@@ -23,17 +23,15 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchBooks() {
-      
+
       const { data } = await api.get('/books');
       setBooks(data)
     }
 
     fetchBooks();
   }, []);
-    
-  console.log(books)
 
-  const isUserLogedIn = session.status != 'unauthenticated'
+  console.log(books)
 
   async function handleConnectGoogle() {
     if (session.status != 'unauthenticated') {
@@ -84,9 +82,9 @@ export default function Home() {
               </SideContentUpper>
               <SideContentDown>
                 <div className="loged">
-                  <Image src={session.data.user.avatar_url} alt="avatar" width={32} height={32} style={{ borderRadius: 999 }}/>
+                  <Image src={session.data.user.avatar_url} alt="avatar" width={32} height={32} style={{ borderRadius: 999 }} />
                   <p>{session.data.user.name.split(' ', 1)}</p>
-                 <SignOut size={20} color="#F75A68" style={{ cursor: "pointer" }} onClick={handleLogOut}/>
+                  <SignOut size={20} color="#F75A68" style={{ cursor: "pointer" }} onClick={handleLogOut} />
                 </div>
               </SideContentDown>
             </Sidebar>
@@ -128,7 +126,7 @@ export default function Home() {
                   </div>
                 </BookSectionDesc>
               </BookSection>
-              <p style={{ marginBottom:16, marginTop: 28 }}>Avaliações mais recentes</p>
+              <p style={{ marginBottom: 16, marginTop: 28 }}>Avaliações mais recentes</p>
               <BookSection>
                 <BookSectionProfile>
                   <div>
@@ -256,35 +254,40 @@ export default function Home() {
 
                 <p>Avaliações mais recentes</p>
               </ContentTitle>
-              <BookSection>
-                <BookSectionProfile>
-                  <div>
-                    <Image src={Avatar} alt="avatar" />
-                    <div>
-                      <h4>Jaxson Dias</h4>
-                      <p>Hoje</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                  </div>
+              {books?.map((item) => {
+                return (
+                  <BookSection>
+                    <BookSectionProfile>
+                      <div>
+                        <Image src={'/'+ item.cover_url} alt="avatar" width={108} height={152}/>
+                        <div>
+                          <h4>Jaxson Dias</h4>
+                          <p>Hoje</p>
+                        </div>
+                      </div>
+                      <div className="star">
+                        <Star size={16} weight="fill" color="#8381D9" />
+                        <Star size={16} weight="fill" color="#8381D9" />
+                        <Star size={16} weight="fill" color="#8381D9" />
+                        <Star size={16} weight="fill" color="#8381D9" />
+                        <Star size={16} weight="fill" color="#8381D9" />
+                      </div>
 
-                </BookSectionProfile>
-                <BookSectionDesc>
-                  <Image src={Hobbit} alt="book" width={100} height={152} />
-                  <div>
-                    <div>
-                      <h4>O Hobbit</h4>
-                      <p>J.R.R. Tolkien</p>
-                    </div>
-                    <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
-                  </div>
-                </BookSectionDesc>
-              </BookSection>
+                    </BookSectionProfile>
+                    <BookSectionDesc>
+                      <Image src={Hobbit} alt="book" width={100} height={152} />
+                      <div>
+                        <div>
+                          <h4>O Hobbit</h4>
+                          <p>J.R.R. Tolkien</p>
+                        </div>
+                        <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
+                      </div>
+                    </BookSectionDesc>
+                  </BookSection>
+                )
+              })}
+
             </Content>
             <Right>
               <RightDesc>
