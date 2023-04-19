@@ -12,7 +12,33 @@ import Github from '../../assets/images/akar-icons_github-fill.png'
 import { useState, useEffect } from "react";
 import { prisma } from "@/lib/prisma";
 import { api } from "@/lib/axios";
-import { Book } from "@prisma/client";
+import { formatDistanceToNow } from "date-fns";
+//import { Book } from "@prisma/client";
+import { ptBR } from 'date-fns/locale';
+
+interface Book {
+  book: {
+    author: string
+    cover_url: string
+    created_at: string
+    id: string
+    name: string
+    summary: string
+    total_pages: number
+  }
+  book_id: string
+  rate: number
+  created_at: Date | string 
+  distance: string
+  user: {
+    id: string
+    name: string
+    avatar_url: string
+    created_at: Date
+    email: string
+    emailVerified: Date | null
+  }
+}
 
 
 
@@ -26,12 +52,18 @@ export default function Home() {
 
       const { data } = await api.get('/books');
       setBooks(data)
+      
+      console.log(books)
     }
 
     fetchBooks();
   }, []);
 
-  console.log(books)
+  books?.map((item) => {
+    const distance = formatDistanceToNow(new Date(item.created_at), {locale: ptBR, addSuffix: true})
+    item['distance'] = distance
+  }) 
+  
 
   async function handleConnectGoogle() {
     if (session.status != 'unauthenticated') {
@@ -53,6 +85,10 @@ export default function Home() {
     await signOut()
   }
 
+  
+  
+
+  
 
   return (
     <>
@@ -259,10 +295,10 @@ export default function Home() {
                   <BookSection>
                     <BookSectionProfile>
                       <div>
-                        <Image src={'/'+ item.cover_url} alt="avatar" width={108} height={152}/>
+                        <Image src={item.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
                         <div>
-                          <h4>Jaxson Dias</h4>
-                          <p>Hoje</p>
+                          <h4>{item.user.name}</h4>
+                          <p>{item.distance}</p>
                         </div>
                       </div>
                       <div className="star">

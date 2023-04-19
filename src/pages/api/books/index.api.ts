@@ -10,7 +10,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         created_at: 'desc'
       },
       take: 3,
-
+      select: {
+        book_id: true,
+        book: true,
+        rate: true,
+        user: true,
+        created_at: true
+      }
     })
 
     const bookDesc1 = await prisma.book.findUnique({
@@ -33,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const books = [bookDesc1, bookDesc2, bookDesc3]
 
-    return res.status(200).json(books);
+    return res.status(200).json(recentBooksRatings);
 
   
 }

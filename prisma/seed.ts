@@ -3,6 +3,7 @@ import { books } from './constants/books'
 import { categories } from './constants/categories'
 import { ratings } from './constants/ratings'
 import { users } from './constants/users'
+import { formatISO9075 } from 'date-fns'
 const prisma = new PrismaClient()
 
 async function main() {
@@ -59,6 +60,10 @@ async function main() {
   })
 
   const ratingsSeed = ratings.map((rating) => {
+    const dateString = new Date().toUTCString();
+    const date = new Date(Date.parse(dateString));
+
+    const stream = formatISO9075(date);
     return prisma.rating.create({
       data: {
         id: rating.id,
@@ -70,7 +75,7 @@ async function main() {
         book: {
           connect: { id: rating.book_id },
         },
-        created_at: String(new Date())
+        created_at: String(stream)
       },
     })
   })
