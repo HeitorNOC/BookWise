@@ -5,15 +5,15 @@ import Image from "next/image";
 import { Binoculars, CaretRight, ChartLineUp, SignIn, SignOut, Star, User, X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog';
 import Avatar from '../../assets/images/Avatar.png'
-import Hobbit from '../../assets/images/o-hobbit.png'
-//import Book from '../../assets/images/Book.png'
+import fragmentos from '../../../public/assets/images/books/fragmentos-do-horror.png'
+
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
 import { useState, useEffect } from "react";
-import { prisma } from "@/lib/prisma";
+
 import { api } from "@/lib/axios";
 import { formatDistanceToNow } from "date-fns";
-//import { Book } from "@prisma/client";
+
 import { ptBR } from 'date-fns/locale';
 
 interface Book {
@@ -28,7 +28,7 @@ interface Book {
   }
   book_id: string
   rate: number
-  created_at: Date | string 
+  created_at: Date | string
   distance: string
   user: {
     id: string
@@ -52,18 +52,16 @@ export default function Home() {
 
       const { data } = await api.get('/books');
       setBooks(data)
-      
-      console.log(books)
     }
 
     fetchBooks();
   }, []);
 
   books?.map((item) => {
-    const distance = formatDistanceToNow(new Date(item.created_at), {locale: ptBR, addSuffix: true})
+    const distance = formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })
     item['distance'] = distance
-  }) 
-  
+  })
+
 
   async function handleConnectGoogle() {
     if (session.status != 'unauthenticated') {
@@ -85,10 +83,25 @@ export default function Home() {
     await signOut()
   }
 
-  
-  
 
-  
+  function countStars(rate: Number) {
+    switch (true) {
+      case rate == 0:
+        return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 1:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 2:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+      case rate == 3:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+      case rate == 4:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+      case rate == 5:
+        return [<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />]
+      }
+  }
+
+
 
   return (
     <>
@@ -152,7 +165,7 @@ export default function Home() {
 
                 </BookSectionProfile>
                 <BookSectionDesc>
-                  <Image src={Hobbit} alt="book" width={100} height={152} />
+                  <Image src={fragmentos} alt="book" width={100} height={152} />
                   <div>
                     <div>
                       <h4>O Hobbit</h4>
@@ -182,7 +195,7 @@ export default function Home() {
 
                 </BookSectionProfile>
                 <BookSectionDesc>
-                  <Image src={Hobbit} alt="book" width={100} height={152} />
+                  <Image src={fragmentos} alt="book" width={100} height={152} />
                   <div>
                     <div>
                       <h4>O Hobbit</h4>
@@ -199,7 +212,7 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               <RightBook>
-                <Image src={Hobbit} alt="Book" width={64} height={94} />
+                <Image src={fragmentos} alt="Book" width={64} height={94} />
                 <div className="flex">
                   <div>
                     <h4>A revolução dos bichos</h4>
@@ -302,22 +315,24 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="star">
-                        <Star size={16} weight="fill" color="#8381D9" />
-                        <Star size={16} weight="fill" color="#8381D9" />
-                        <Star size={16} weight="fill" color="#8381D9" />
-                        <Star size={16} weight="fill" color="#8381D9" />
-                        <Star size={16} weight="fill" color="#8381D9" />
+
+                        {
+                          countStars(Math.floor(item.rate))?.map((star) => (
+                            star
+                          ))
+
+                        }
                       </div>
 
                     </BookSectionProfile>
                     <BookSectionDesc>
-                      <Image src={Hobbit} alt="book" width={100} height={152} />
+                      <Image src={'/'+item.book.cover_url} alt="book" width={100} height={152} />
                       <div>
                         <div>
-                          <h4>O Hobbit</h4>
-                          <p>J.R.R. Tolkien</p>
+                          <h4>{item.book.name}</h4>
+                          <p>{item.book.author}</p>
                         </div>
-                        <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
+                        <p>{item.book.summary}</p>
                       </div>
                     </BookSectionDesc>
                   </BookSection>
@@ -331,7 +346,7 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               <RightBook>
-                <Image src={Hobbit} alt="Book" width={64} height={94} />
+                <Image src={fragmentos} alt="Book" width={64} height={94} />
                 <div className="flex">
                   <div>
                     <h4>A revolução dos bichos</h4>

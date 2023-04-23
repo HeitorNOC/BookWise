@@ -14,7 +14,8 @@ export const globalStyles = globalCss({
     color: "White",
     '-webkit-font-smoothing': 'antialiased',
 
-    maxWidth: '75%',
+    maxWidth: '97%',
+    maxHeight: '70%'
     
   },
 });

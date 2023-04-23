@@ -5,8 +5,10 @@ import * as Dialog from '@radix-ui/react-dialog';
 export const Container = styled('div', {
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
-  width: 1440
+  justifyContent: "space-between",
+  width: 'calc(100vw - 50px)',
+  overflow: 'hidden',
+  height: 1080
 })
 
 export const Sidebar = styled('div', {
@@ -14,7 +16,7 @@ export const Sidebar = styled('div', {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "space-between",
-  height: '100vh',
+  height: 1024,
 
   marginTop: 20,
   marginBottom: 16,
@@ -34,7 +36,7 @@ export const Content = styled('div', {
   alignItems: "flex-start",
 
   height: '100vh',
-  paddingTop: 72,
+  //paddingTop: 72,
   paddingLeft: 96,
   paddingRight: 64
 })
@@ -44,8 +46,8 @@ export const Right = styled('div', {
   flexDirection: "column",
   alignItems: "flex-start",
 
-  height: '100vh',
-  paddingTop: 146,
+  height: 1024,
+  paddingTop: 116,
   paddingRight: 96,
 })
 
@@ -69,7 +71,7 @@ export const SideContentUpper = styled('div', {
         backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
         position: 'absolute',
         left: '70px',
-        top: 'calc(20% - 33px/2)',
+        top: 'calc(20% - 15px/2)',
         width: 4,
         height: 24,
         borderRadius: 'inherit',
