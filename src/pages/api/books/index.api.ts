@@ -5,6 +5,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method != 'GET') {
     return res.status(405).end()
   }
+
+  const userToken = req.cookies['next-auth.session-token']
+
     const recentBooksRatings = await prisma.rating.findMany({
       orderBy: {
         created_at: 'asc'
@@ -34,8 +37,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
 
+    
+      const userLoged = await prisma.session.findUnique({
+      where: {
+        sessionToken: userToken
+      },
+      select: {
+        userId: true,
 
-    return res.status(200).json([recentBooksRatings, popularBooks]);
+      }
+    })
+    
+
+
+      const id = userLoged?.userId 
+
+      const lastRatingByUserLoged = await prisma.rating.findMany({
+      where: {
+        user_id: id
+      },
+      orderBy: {
+        created_at: "desc"
+      },
+      take: 1,
+      select: {
+        book: true,
+        rate: true,
+        user: true,
+        created_at: true
+
+      }
+      
+    })
+    
+    
+
+    
+
+    
+
+    return res.status(200).json([recentBooksRatings, popularBooks, lastRatingByUserLoged ?? undefined]);
 
   
 }

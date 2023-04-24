@@ -34,9 +34,9 @@ interface Book {
     id: string
     name: string
     avatar_url: string
-    created_at: Date
+    created_at: Date | string
     email: string
-    emailVerified: Date | null
+    emailVerified: Date | null | string
   }
 }
 
@@ -55,11 +55,35 @@ interface PopBooks {
 
 }
 
+interface LastBookRatingByUserLoged {
+  book: {
+    author: string
+    cover_url: string
+    id: string
+    name: string
+    summary: string
+    total_pages: number
+    created_at: string | Date
+  }
+  distance: string
+  created_at: string | Date
+  rate: number
+  user: {
+    id: string
+    name: string
+    avatar_url: string
+    created_at: Date | string
+    email: string
+    emailVerified: Date | null | string
+  }
+}
+
 
 
 export default function Home() {
   const [books, setBooks] = useState<Array<Book>>();
   const [popBooks, setPopBooks] = useState<Array<PopBooks>>();
+  const [lastBookRating, setLastBookRating] = useState<Array<LastBookRatingByUserLoged>>()
 
   const session = useSession()
 
@@ -69,7 +93,10 @@ export default function Home() {
       const { data } = await api.get('/books');
       setBooks(data[0])
       setPopBooks(data[1])
+      if (data[2] != undefined || data[2] != null) {
 
+        setLastBookRating(data[2])
+      }
     }
 
     fetchBooks();
@@ -80,14 +107,21 @@ export default function Home() {
     item['distance'] = distance
   })
 
+  if (lastBookRating != undefined) {
+    lastBookRating?.map((item) => {
+      const distance = formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })
+      item['distance'] = distance
+    })
+  }
+
 
   async function handleConnectGoogle() {
     if (session.status != 'unauthenticated') {
       await signOut()
 
-    }   
-      await signIn('google', { callbackUrl: '/home' })
-    
+    }
+    await signIn('google', { callbackUrl: '/home' })
+
   }
 
   async function handleConnectGithub() {
@@ -125,7 +159,7 @@ export default function Home() {
   return (
     <>
       {
-        session.data ? (
+        session.data && lastBookRating != undefined ? (
           <Container>
             <Sidebar>
               <SideContentUpper>
@@ -165,87 +199,107 @@ export default function Home() {
 
                 <p>Sua última leitura</p>
               </ContentTitle>
-              <BookSection>
+              <BookSection style={{ background: '#252D4A' }}>
                 <BookSectionProfile>
                   <div>
-                    <Image src={Avatar} alt="avatar" />
+                    <Image src={lastBookRating[0].user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
                     <div>
-                      <h4>Jaxson Dias</h4>
-                      <p>Hoje</p>
+                      <h4>{lastBookRating[0].user.name}</h4>
+                      <p>{lastBookRating[0].distance}</p>
                     </div>
                   </div>
                   <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
+                    {
+                      countStars(Math.floor(lastBookRating[0].rate))?.map((star) => (
+                        star
+                      ))
+
+                    }
                   </div>
 
                 </BookSectionProfile>
                 <BookSectionDesc>
-                  <Image src={fragmentos} alt="book" width={100} height={152} />
+                  <Image src={'/' + lastBookRating[0].book.cover_url} alt="book" width={100} height={152} />
                   <div>
                     <div>
-                      <h4>O Hobbit</h4>
-                      <p>J.R.R. Tolkien</p>
+                      <h4>{lastBookRating[0].book.name}</h4>
+                      <p>{lastBookRating[0].book.author}</p>
                     </div>
-                    <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
+                    <p>{lastBookRating[0].book.summary}</p>
                   </div>
                 </BookSectionDesc>
               </BookSection>
               <p style={{ marginBottom: 16, marginTop: 28 }}>Avaliações mais recentes</p>
-              <BookSection>
-                <BookSectionProfile>
-                  <div>
-                    <Image src={Avatar} alt="avatar" />
-                    <div>
-                      <h4>Jaxson Dias</h4>
-                      <p>Hoje</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                  </div>
 
-                </BookSectionProfile>
-                <BookSectionDesc>
-                  <Image src={fragmentos} alt="book" width={100} height={152} />
-                  <div>
-                    <div>
-                      <h4>O Hobbit</h4>
-                      <p>J.R.R. Tolkien</p>
-                    </div>
-                    <p>Semper et sapien proin vitae nisi. Feugiat neque integer donec et aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed vulputate massa velit nibh...</p>
-                  </div>
-                </BookSectionDesc>
-              </BookSection>
+              {
+                books?.map((item, index) => {
+                  if (index <= 2) {
+                    return (
+                      <BookSection>
+                        <BookSectionProfile>
+                          <div>
+                            <Image src={item.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
+                            <div>
+                              <h4>{item.user.name}</h4>
+                              <p>{item.distance}</p>
+                            </div>
+                          </div>
+                          <div className="star">
+                            {
+                              countStars(Math.floor(item.rate))?.map((star) => (
+                                star
+                              ))
+
+                            }
+                          </div>
+
+                        </BookSectionProfile>
+                        <BookSectionDesc>
+                          <Image src={'/' + item.book.cover_url} alt="book" width={100} height={152} />
+                          <div>
+                            <div>
+                              <h4>{item.book.name}</h4>
+                              <p>{item.book.author}</p>
+                            </div>
+                            <p>{item.book.summary}</p>
+                          </div>
+                        </BookSectionDesc>
+                      </BookSection>
+                    )
+                  }
+
+                })
+              }
+
             </Content>
             <Right>
               <RightDesc>
                 <p>Livros populares</p>
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
-              <RightBook>
-                <Image src={fragmentos} alt="Book" width={64} height={94} />
-                <div className="flex">
-                  <div>
-                    <h4>A revolução dos bichos</h4>
-                    <p>George Orwell</p>
-                  </div>
-                  <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                  </div>
-                </div>
-              </RightBook>
+              {
+                popBooks?.map((actualItem) => {
+                  return (
+                    <RightBook>
+                      <Image src={'/' + actualItem.cover_url} alt="Book" width={64} height={94} />
+                      <div className="flex">
+                        <div>
+                          <h4>{actualItem.name}</h4>
+                          <p>{actualItem.author}</p>
+                        </div>
+                        <div className="star">
+                          {
+                            countStars(Math.floor(actualItem.ratings.rate))?.map((star) => (
+                              star
+                            ))
+
+                          }
+                        </div>
+                      </div>
+                    </RightBook>
+                  )
+                })
+              }
             </Right>
           </Container>
         ) : (
@@ -368,19 +422,19 @@ export default function Home() {
                 popBooks?.map((actualItem) => {
                   return (
                     <RightBook>
-                      <Image src={'/'+actualItem.cover_url} alt="Book" width={64} height={94} />
+                      <Image src={'/' + actualItem.cover_url} alt="Book" width={64} height={94} />
                       <div className="flex">
                         <div>
                           <h4>{actualItem.name}</h4>
                           <p>{actualItem.author}</p>
                         </div>
                         <div className="star">
-                        {
-                          countStars(Math.floor(actualItem.ratings.rate))?.map((star) => (
-                            star
-                          ))
+                          {
+                            countStars(Math.floor(actualItem.ratings.rate))?.map((star) => (
+                              star
+                            ))
 
-                        }
+                          }
                         </div>
                       </div>
                     </RightBook>
