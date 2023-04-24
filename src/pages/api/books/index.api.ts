@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
     const recentBooksRatings = await prisma.rating.findMany({
       orderBy: {
-        created_at: 'desc'
+        created_at: 'asc'
       },
       take: 3,
       select: {
@@ -19,8 +19,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
 
+    const popularBooks = await prisma.book.findMany({
+      orderBy: {
+        ratings: {
+          _count: 'asc'
+        },
+      },
+      take: 4,
+      select: {
+        name: true,
+        ratings: true,
+        cover_url: true,
+        author: true
+      }
+    })
 
-    return res.status(200).json(recentBooksRatings);
+
+    return res.status(200).json([recentBooksRatings, popularBooks]);
 
   
 }

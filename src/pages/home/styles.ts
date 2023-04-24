@@ -241,11 +241,13 @@ export const RightBook = styled('div', {
   background: "$gray700",
   padding: "16px 20px",
   borderRadius: 8,
+  maxWidth: 324,
 
   h4: {
     fontWeight: 700,
     fontSize: 16,
-    color: "$gray100"
+    color: "$gray100",
+    //flexWrap: 'wrap'
   },
 
   p: {

@@ -40,10 +40,26 @@ interface Book {
   }
 }
 
+interface PopBooks {
+  name: string
+  ratings: {
+    id: string
+    rate: number
+    description: string
+    created_at: string
+    book_id: string
+    user_id: string
+  }
+  cover_url: string
+  author: string
+
+}
+
 
 
 export default function Home() {
   const [books, setBooks] = useState<Array<Book>>();
+  const [popBooks, setPopBooks] = useState<Array<PopBooks>>();
 
   const session = useSession()
 
@@ -51,7 +67,9 @@ export default function Home() {
     async function fetchBooks() {
 
       const { data } = await api.get('/books');
-      setBooks(data)
+      setBooks(data[0])
+      setPopBooks(data[1])
+
     }
 
     fetchBooks();
@@ -91,14 +109,14 @@ export default function Home() {
       case rate == 1:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 2:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 3:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 4:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16}  color="#8381D9" />]
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 5:
-        return [<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />,<Star size={16} weight="fill" color="#8381D9" />]
-      }
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
+    }
   }
 
 
@@ -326,7 +344,7 @@ export default function Home() {
 
                     </BookSectionProfile>
                     <BookSectionDesc>
-                      <Image src={'/'+item.book.cover_url} alt="book" width={100} height={152} />
+                      <Image src={'/' + item.book.cover_url} alt="book" width={100} height={152} />
                       <div>
                         <div>
                           <h4>{item.book.name}</h4>
@@ -345,22 +363,30 @@ export default function Home() {
                 <p>Livros populares</p>
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
-              <RightBook>
-                <Image src={fragmentos} alt="Book" width={64} height={94} />
-                <div className="flex">
-                  <div>
-                    <h4>A revolução dos bichos</h4>
-                    <p>George Orwell</p>
-                  </div>
-                  <div className="star">
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                    <Star size={16} weight="fill" color="#8381D9" />
-                  </div>
-                </div>
-              </RightBook>
+              {
+                popBooks?.map((actualItem) => {
+                  return (
+                    <RightBook>
+                      <Image src={'/'+actualItem.cover_url} alt="Book" width={64} height={94} />
+                      <div className="flex">
+                        <div>
+                          <h4>{actualItem.name}</h4>
+                          <p>{actualItem.author}</p>
+                        </div>
+                        <div className="star">
+                        {
+                          countStars(Math.floor(actualItem.ratings.rate))?.map((star) => (
+                            star
+                          ))
+
+                        }
+                        </div>
+                      </div>
+                    </RightBook>
+                  )
+                })
+              }
+
             </Right>
           </Container>
         )
