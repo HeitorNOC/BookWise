@@ -85,8 +85,9 @@ export default function Home() {
     if (session.status != 'unauthenticated') {
       await signOut()
 
-    }
-    await signIn('google', { callbackUrl: '/home' })
+    }   
+      await signIn('google', { callbackUrl: '/home' })
+    
   }
 
   async function handleConnectGithub() {
