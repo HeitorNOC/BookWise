@@ -79,6 +79,23 @@ export const SideContentUpper = styled('div', {
       }
     },
 
+    '.selected1': {
+      color: "$gray100",
+
+      '&::before': {
+        content: `''`,
+        display: 'block',
+        backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
+        position: 'absolute',
+        left: '70px',
+        top: 'calc(25% + 1px)',
+        width: 4,
+        height: 24,
+        borderRadius: 'inherit',
+        zIndex: 99,
+      }
+    },
+
     div: {
 
       display: "flex",

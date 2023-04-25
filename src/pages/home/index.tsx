@@ -4,8 +4,7 @@ import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
 import { Binoculars, CaretRight, ChartLineUp, SignIn, SignOut, Star, User, X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog';
-import Avatar from '../../assets/images/Avatar.png'
-import fragmentos from '../../../public/assets/images/books/fragmentos-do-horror.png'
+
 
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
@@ -320,7 +319,7 @@ export default function Home() {
                     <ChartLineUp size={24} />
                     <p> Início</p>
                   </div>
-                  <div>
+                  <div onClick={handleExplore}>
                     <Binoculars size={24} />
                     <p>Explorar</p>
                   </div>
