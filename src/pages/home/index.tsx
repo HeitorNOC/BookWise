@@ -15,6 +15,7 @@ import { api } from "@/lib/axios";
 import { formatDistanceToNow } from "date-fns";
 
 import { ptBR } from 'date-fns/locale';
+import { useRouter } from "next/router";
 
 interface Book {
   book: {
@@ -85,6 +86,7 @@ export default function Home() {
   const [popBooks, setPopBooks] = useState<Array<PopBooks>>();
   const [lastBookRating, setLastBookRating] = useState<Array<LastBookRatingByUserLoged>>()
 
+  const router = useRouter()
   const session = useSession()
 
   useEffect(() => {
@@ -133,7 +135,11 @@ export default function Home() {
   }
 
   async function handleLogOut() {
-    await signOut()
+    await signOut({callbackUrl: '/'})
+  }
+
+  function handleExplore() {
+    router.push('/explore')
   }
 
 
@@ -171,7 +177,7 @@ export default function Home() {
                     <ChartLineUp size={24} />
                     <p> Início</p>
                   </div>
-                  <div>
+                  <div onClick={handleExplore}>
                     <Binoculars size={24} />
                     <p>Explorar</p>
                   </div>

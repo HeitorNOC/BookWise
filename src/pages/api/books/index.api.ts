@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const userToken = req.cookies['next-auth.session-token']
+  let id: string | undefined
 
     const recentBooksRatings = await prisma.rating.findMany({
       orderBy: {
@@ -37,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     })
 
-    
+    if (userToken) {
       const userLoged = await prisma.session.findUnique({
       where: {
         sessionToken: userToken
@@ -47,10 +48,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       }
     })
+    id = userLoged?.userId 
+    }
+      
     
 
 
-      const id = userLoged?.userId 
 
       const lastRatingByUserLoged = await prisma.rating.findMany({
       where: {
