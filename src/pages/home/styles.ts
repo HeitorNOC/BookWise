@@ -36,7 +36,7 @@ export const Content = styled('div', {
   alignItems: "flex-start",
 
   height: '100vh',
-  //paddingTop: 72,
+  paddingTop: 72,
   paddingLeft: 96,
   paddingRight: 64
 })
@@ -71,7 +71,7 @@ export const SideContentUpper = styled('div', {
         backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
         position: 'absolute',
         left: '70px',
-        top: 'calc(20% - 15px/2)',
+        top: 'calc(17% - 3px)',
         width: 4,
         height: 24,
         borderRadius: 'inherit',
@@ -88,7 +88,7 @@ export const SideContentUpper = styled('div', {
         backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
         position: 'absolute',
         left: '70px',
-        top: 'calc(25% + 1px)',
+        top: 'calc(20% + 10px)',
         width: 4,
         height: 24,
         borderRadius: 'inherit',

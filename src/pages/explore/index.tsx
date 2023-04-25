@@ -1,16 +1,63 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/router"
-import { Container, SideContentDown, SideContentUpper, Sidebar,Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "../home/styles"
+import { SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "../home/styles"
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, ChartLineUp, SignIn, SignOut, User, X } from "@phosphor-icons/react";
+import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, User, X } from "@phosphor-icons/react";
 import * as Dialog from '@radix-ui/react-dialog';
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
+import { Content, Main, NavDown, NavUpper, Navbar, Container } from "./styles";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/axios";
+
+
+interface Books {
+  name: string
+  ratings: {
+    id: string
+    rate: number
+    description: string
+    created_at: string
+    book_id: string
+    user_id: string
+  }
+  cover_url: string
+  author: string
+  categories: {
+    bookId: string
+    categoryId: string
+  }
+}
+
+interface Categories {
+  category: {
+    id: string
+    name: string
+  }
+}
 
 export default function Explore() {
+  const [books, setBooks] = useState<Array<Books>>()
+  const [categories, setCategories] = useState<Array<Categories>>()
+
   const router = useRouter()
   const session = useSession()
+
+  useEffect(() => {
+    async function fetchBooks() {
+
+      const { data } = await api.get('/books/explore');
+      setBooks(data[0])
+      setCategories(data[1])
+      console.log(data[1])
+    }
+
+    fetchBooks();
+
+
+  }, [])
+
 
   function handleHome() {
     router.push('/home')
@@ -34,7 +81,7 @@ export default function Explore() {
   }
 
   async function handleLogOut() {
-    await signOut({callbackUrl: '/'})
+    await signOut({ callbackUrl: '/' })
   }
 
   return (
@@ -71,7 +118,19 @@ export default function Explore() {
                 </div>
               </SideContentDown>
             </Sidebar>
-            
+            <Content>
+              <Navbar>
+                <NavUpper>
+                  <div></div>
+                  <div></div>
+                </NavUpper>
+                <NavDown>
+
+                </NavDown>
+              </Navbar>
+              <Main></Main>
+            </Content>
+
           </Container>
         ) : (
           <Container>
@@ -138,7 +197,42 @@ export default function Explore() {
                 </div>
               </SideContentDown>
             </Sidebar>
-            
+            <Content>
+              <Navbar>
+                <form action="">
+
+                  <NavUpper>
+                    <div className="desc">
+                      <Binoculars size={32} color="#50B2C0" />
+                      <h2>Explorar</h2>
+                    </div>
+                    <div className="input">
+                      <input type="text" placeholder="Buscar livro ou autor" />
+                      <button type="submit" style={{ borderStyle: "none",  background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+
+                        <MagnifyingGlass size={20} color="#303F73"/>
+                      </button>
+                    </div>
+                  </NavUpper>
+                  <NavDown>
+                    <div>
+                      <p>Tudo</p>
+                    </div>
+                    {
+                      categories?.map(({ category }) => {
+                        return (
+                          <div>
+                            <p>{category.name}</p>
+                          </div>
+                        )
+                      })
+                    }
+                  </NavDown>
+                </form>
+              </Navbar>
+              <Main></Main>
+            </Content>
+
           </Container>
         )
       }
