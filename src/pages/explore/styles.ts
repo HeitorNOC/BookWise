@@ -61,33 +61,45 @@ export const NavUpper = styled("div", {
         outline: 0,
       },
 
-      
+
     }
   },
 })
+
+
 export const NavDown = styled("div", {
   display: "flex",
   alignItems: "center",
   marginTop: 40,
 
-  div: {
-    display: "flex",
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '4px 16px',
-    gap: '8px',
-    marginRight: 12,
-    cursor: "pointer",
 
-    border: '1px solid #8381D9',
-    borderRadius: '999px',
+})
 
-    p: {
-      fontSize: 16,
-      color: "#8381D9"
-    }
+export const Category = styled("div", {
+  display: "flex",
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '4px 16px',
+  gap: '8px',
+  marginRight: 12,
+  cursor: "pointer",
 
+  border: '1px solid #8381D9',
+  borderRadius: '999px',
 
-  }
+  p: {
+    fontSize: 16,
+    color: "#8381D9"
+  },
+
+  variants: {
+    active: {
+      true: {
+        background: "#2A2879",
+        borderColor: "#2A2879",
+        color: "#F8F9FC",
+      },
+    },
+  },
 })

@@ -7,7 +7,7 @@ import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, User, X } fr
 import * as Dialog from '@radix-ui/react-dialog';
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
-import { Content, Main, NavDown, NavUpper, Navbar, Container } from "./styles";
+import { Content, Main, NavDown, NavUpper, Navbar, Container, Category } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 
@@ -40,6 +40,11 @@ interface Categories {
 export default function Explore() {
   const [books, setBooks] = useState<Array<Books>>()
   const [categories, setCategories] = useState<Array<Categories>>()
+  const [activeCategoryId, setActiveCategoryId] = useState("0");
+
+  function handleCategoryClick(categoryId: string) {
+    setActiveCategoryId(categoryId);
+  }
 
   const router = useRouter()
   const session = useSession()
@@ -50,13 +55,16 @@ export default function Explore() {
       const { data } = await api.get('/books/explore');
       setBooks(data[0])
       setCategories(data[1])
-      console.log(data[1])
+      setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
+
     }
 
     fetchBooks();
 
 
   }, [])
+
+
 
 
   function handleHome() {
@@ -208,22 +216,23 @@ export default function Explore() {
                     </div>
                     <div className="input">
                       <input type="text" placeholder="Buscar livro ou autor" />
-                      <button type="submit" style={{ borderStyle: "none",  background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+                      <button type="submit" style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
-                        <MagnifyingGlass size={20} color="#303F73"/>
+                        <MagnifyingGlass size={20} color="#303F73" />
                       </button>
                     </div>
                   </NavUpper>
                   <NavDown>
-                    <div>
-                      <p>Tudo</p>
-                    </div>
                     {
                       categories?.map(({ category }) => {
                         return (
-                          <div>
+                          <Category
+                            key={category.id}
+                            active={category.id == activeCategoryId ? true : false}
+                            onClick={() => handleCategoryClick(category.id)}
+                          >
                             <p>{category.name}</p>
-                          </div>
+                          </Category>
                         )
                       })
                     }
