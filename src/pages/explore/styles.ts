@@ -21,8 +21,46 @@ export const Navbar = styled("div", {
 
 })
 export const Main = styled("div", {
-
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr 1fr ",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 42,
+  gap: 20
 })
+
+export const Book = styled("div", {
+  display: "flex",
+  //justifyContent: "space-between",
+  //alignItems: "center",
+  background: "$gray700",
+  borderRadius: 8,
+  padding: "16px 20px",
+
+  '.left': {
+    marginRight: 20
+  },
+
+  '.right': {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
+  },
+
+  '.upper': {
+    h4: {
+      fontWeight: 700,
+      fontSize: 16,
+      color: "$gray100"
+    },
+    p: {
+      fontWeight: 400,
+      fontSize: 14,
+      colort: "$gray400"
+    }
+  }
+})
+
 export const NavUpper = styled("div", {
   display: "flex",
   alignItems: "center",

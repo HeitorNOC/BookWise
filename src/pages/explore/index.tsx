@@ -3,25 +3,25 @@ import { useRouter } from "next/router"
 import { SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "../home/styles"
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, User, X } from "@phosphor-icons/react";
+import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, Star, User, X } from "@phosphor-icons/react";
 import * as Dialog from '@radix-ui/react-dialog';
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
-import { Content, Main, NavDown, NavUpper, Navbar, Container, Category } from "./styles";
+import { Content, Main, NavDown, NavUpper, Navbar, Container, Category, Book } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 
 
 interface Books {
   name: string
-  ratings: {
+  ratings: [{
     id: string
     rate: number
     description: string
     created_at: string
     book_id: string
     user_id: string
-  }
+  }]
   cover_url: string
   author: string
   categories: {
@@ -56,7 +56,7 @@ export default function Explore() {
       setBooks(data[0])
       setCategories(data[1])
       setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
-
+      console.log(data[0])
     }
 
     fetchBooks();
@@ -64,6 +64,22 @@ export default function Explore() {
 
   }, [])
 
+  function countStars(rate: Number) {
+    switch (true) {
+      case rate == 0:
+        return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 1:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 2:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 3:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 4:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 5:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
+    }
+  }
 
 
 
@@ -239,7 +255,33 @@ export default function Explore() {
                   </NavDown>
                 </form>
               </Navbar>
-              <Main></Main>
+              <Main>
+                {
+                  books?.map((item) => {
+                    return (
+                      <Book>
+                        <div className="left">
+                          <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
+                        </div>
+                        <div className="right">
+                          <div className="upper">
+                            <h4>{item.name}</h4>
+                            <p>{item.author}</p>
+                          </div>
+                          <div className="lower">
+                            {
+                              countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
+                                star
+                              ))
+
+                            }
+                          </div>
+                        </div>
+                      </Book>
+                    )
+                  })
+                }
+              </Main>
             </Content>
 
           </Container>
