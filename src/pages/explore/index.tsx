@@ -24,10 +24,10 @@ interface Books {
   }]
   cover_url: string
   author: string
-  categories: {
+  categories: [{
     bookId: string
     categoryId: string
-  }
+  }]
 }
 
 interface Categories {
@@ -39,11 +39,20 @@ interface Categories {
 
 export default function Explore() {
   const [books, setBooks] = useState<Array<Books>>()
+  const [activeBooks, setActiveBooks] = useState<Array<Books>>()
   const [categories, setCategories] = useState<Array<Categories>>()
-  const [activeCategoryId, setActiveCategoryId] = useState("0");
+  const [activeCategoryId, setActiveCategoryId] = useState<String>();
 
   function handleCategoryClick(categoryId: string) {
     setActiveCategoryId(categoryId);
+    if (categoryId == '0') {
+      setActiveBooks(books)
+    } else {
+      let filteredBooks = books?.filter((item) => item.categories.find((category) => category.categoryId == categoryId))
+      setActiveBooks(filteredBooks)
+      
+    }
+    
   }
 
   const router = useRouter()
@@ -56,13 +65,16 @@ export default function Explore() {
       setBooks(data[0])
       setCategories(data[1])
       setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
-      console.log(data[0])
+      setActiveBooks(data[0])
+      setActiveCategoryId("0")
     }
 
     fetchBooks();
 
 
   }, [])
+
+
 
   function countStars(rate: Number) {
     switch (true) {
@@ -257,28 +269,36 @@ export default function Explore() {
               </Navbar>
               <Main>
                 {
-                  books?.map((item) => {
-                    return (
-                      <Book>
-                        <div className="left">
-                          <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
-                        </div>
-                        <div className="right">
-                          <div className="upper">
-                            <h4>{item.name}</h4>
-                            <p>{item.author}</p>
-                          </div>
-                          <div className="lower">
-                            {
-                              countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
-                                star
-                              ))
+                  activeBooks?.map((item) => {
+                    
+                    
+                      
+                      return (
 
-                            }
+                        <Book>
+
+                          <div className="left">
+                            <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
                           </div>
-                        </div>
-                      </Book>
-                    )
+                          <div className="right">
+                            <div className="upper">
+                              <h4>{item.name}</h4>
+                              <p>{item.author}</p>
+                            </div>
+                            <div className="lower">
+                              {
+                                countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
+                                  star
+                                ))
+
+                              }
+                            </div>
+                          </div>
+                        </Book>
+                      )
+                      
+                    
+
                   })
                 }
               </Main>
