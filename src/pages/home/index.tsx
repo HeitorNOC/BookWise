@@ -141,6 +141,10 @@ export default function Home() {
     router.push('/explore')
   }
 
+  function handleProfile() {
+    router.push('/profile')
+  }
+
 
   function countStars(rate: Number) {
     switch (true) {
@@ -180,7 +184,7 @@ export default function Home() {
                     <Binoculars size={24} />
                     <p>Explorar</p>
                   </div>
-                  <div>
+                  <div onClick={handleProfile}>
                     <User size={24} />
                     <p>Perfil</p>
                   </div>

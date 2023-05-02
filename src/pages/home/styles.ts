@@ -95,6 +95,22 @@ export const SideContentUpper = styled('div', {
         zIndex: 99,
       }
     },
+    '.selected2': {
+      color: "$gray100",
+
+      '&::before': {
+        content: `''`,
+        display: 'block',
+        backgroundImage: 'linear-gradient(180deg, #7FD1CC 0%, #9694F5 100%)',
+        position: 'absolute',
+        left: '70px',
+        top: 'calc(25% + 12px)',
+        width: 4,
+        height: 24,
+        borderRadius: 'inherit',
+        zIndex: 99,
+      }
+    },
 
     div: {
 

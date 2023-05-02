@@ -10,9 +10,7 @@ import Github from '../../assets/images/akar-icons_github-fill.png'
 import { Content, Main, NavDown, NavUpper, Navbar, Container, Category, Book } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 
 
 interface Books {
@@ -40,22 +38,10 @@ interface Categories {
   }
 }
 
-const inputSchema = z.object({
-  query: z.string()
-})
 
-type InputQuery = z.input<typeof inputSchema>
 
 export default function Explore() {
-  const {
-    register,
-    handleSubmit
-  } = useForm<InputQuery>({
-    resolver: zodResolver(inputSchema),
-    defaultValues: {
-      query: ''
-    }
-  })
+  
 
 
   const [books, setBooks] = useState<Array<Books>>()
@@ -158,6 +144,10 @@ export default function Explore() {
     await signOut({ callbackUrl: '/' })
   }
 
+  function handleProfile() {
+    router.push('/profile')
+  }
+
   return (
     <>
       {
@@ -177,7 +167,7 @@ export default function Explore() {
                     <Binoculars size={24} />
                     <p>Explorar</p>
                   </div>
-                  <div>
+                  <div onClick={handleProfile}>
                     <User size={24} />
                     <p>Perfil</p>
                   </div>
@@ -193,16 +183,78 @@ export default function Explore() {
               </SideContentDown>
             </Sidebar>
             <Content>
-              <Navbar>
-                <NavUpper>
-                  <div></div>
-                  <div></div>
-                </NavUpper>
-                <NavDown>
+            <Navbar>
+                  
 
-                </NavDown>
+                  <NavUpper>
+                    <div className="desc">
+                      <Binoculars size={32} color="#50B2C0" />
+                      <h2>Explorar</h2>
+                    </div>
+                    <div className="input">
+                      <input type="text" placeholder="Buscar livro ou autor" value={textInput}  onChange={setQueue} />
+                      <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+
+                        <MagnifyingGlass size={20} color="#303F73" />
+                      </button>
+                    </div>
+                  </NavUpper>
+                  <NavDown>
+                    {
+                      categories?.map(({ category }) => {
+                        return (
+                          <Category
+                            key={category.id}
+                            active={category.id == activeCategoryId ? true : false}
+                            onClick={() => handleCategoryClick(category.id)}
+                          >
+                            <p>{category.name}</p>
+                          </Category>
+                        )
+                      })
+                    }
+                  </NavDown>
+                
               </Navbar>
-              <Main></Main>
+              <Main>
+                {
+                  activeBooks?.map((item) => {
+
+
+
+
+                    return (
+                      
+
+                        <Book >
+
+                          <div className="left">
+                            <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
+                          </div>
+                          <div className="right">
+                            <div className="upper">
+                              <h4>{item.name}</h4>
+                              <p>{item.author}</p>
+                            </div>
+                            <div className="lower">
+                              {
+                                countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
+                                  star
+                                ))
+
+                              }
+                            </div>
+                          </div>
+                        </Book>
+                      
+                    )
+
+
+
+                  })
+                }
+              </Main>
+            
             </Content>
 
           </Container>
