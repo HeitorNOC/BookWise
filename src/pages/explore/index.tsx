@@ -10,6 +10,9 @@ import Github from '../../assets/images/akar-icons_github-fill.png'
 import { Content, Main, NavDown, NavUpper, Navbar, Container, Category, Book } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 
 interface Books {
@@ -37,11 +40,30 @@ interface Categories {
   }
 }
 
+const inputSchema = z.object({
+  query: z.string()
+})
+
+type InputQuery = z.input<typeof inputSchema>
+
 export default function Explore() {
+  const {
+    register,
+    handleSubmit
+  } = useForm<InputQuery>({
+    resolver: zodResolver(inputSchema),
+    defaultValues: {
+      query: ''
+    }
+  })
+
+
   const [books, setBooks] = useState<Array<Books>>()
   const [activeBooks, setActiveBooks] = useState<Array<Books>>()
   const [categories, setCategories] = useState<Array<Categories>>()
   const [activeCategoryId, setActiveCategoryId] = useState<String>();
+  const [textInput, setTextInput] = useState<string>()
+  
 
   function handleCategoryClick(categoryId: string) {
     setActiveCategoryId(categoryId);
@@ -50,9 +72,9 @@ export default function Explore() {
     } else {
       let filteredBooks = books?.filter((item) => item.categories.find((category) => category.categoryId == categoryId))
       setActiveBooks(filteredBooks)
-      
+
     }
-    
+
   }
 
   const router = useRouter()
@@ -74,6 +96,22 @@ export default function Explore() {
 
   }, [])
 
+  
+
+  function queueBooks(text:string) {
+    if (text == '') {
+      setActiveBooks(books)
+    } else {
+      let filteredBooks = books?.filter((item) => item.name.includes(text))
+
+      setActiveBooks(filteredBooks)
+    }
+  }
+
+  function setQueue(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault()
+    setTextInput(event.target.value)
+  }
 
 
   function countStars(rate: Number) {
@@ -170,28 +208,28 @@ export default function Explore() {
           </Container>
         ) : (
           <Container>
-            <Sidebar>
-              <SideContentUpper>
-                <div>
-                  <Image src={Logo} alt="logo" />
-                </div>
-                <div className="items">
-                  <div onClick={handleHome}>
-                    <ChartLineUp size={24} />
-                    <p> Início</p>
+            <Dialog.Root>
+              <Sidebar>
+                <SideContentUpper>
+                  <div>
+                    <Image src={Logo} alt="logo" />
                   </div>
-                  <div className="selected1">
-                    <Binoculars size={24} />
-                    <p>Explorar</p>
+                  <div className="items">
+                    <div onClick={handleHome}>
+                      <ChartLineUp size={24} />
+                      <p> Início</p>
+                    </div>
+                    <div className="selected1">
+                      <Binoculars size={24} />
+                      <p>Explorar</p>
+                    </div>
+
                   </div>
-
-                </div>
-              </SideContentUpper>
-              <SideContentDown>
-                <div>
+                </SideContentUpper>
+                <SideContentDown>
+                  <div>
 
 
-                  <Dialog.Root>
                     <Dialog.Trigger asChild>
                       <div className="login">
                         <Button variant="login">Fazer Login</Button>
@@ -229,80 +267,83 @@ export default function Explore() {
                         </Dialog.Close>
                       </DialogContent>
                     </Dialog.Portal>
-                  </Dialog.Root>
-                </div>
-              </SideContentDown>
-            </Sidebar>
-            <Content>
-              <Navbar>
-                <form action="">
+                  </div>
+                </SideContentDown>
+              </Sidebar>
+              <Content>
+                <Navbar>
+                  
 
-                  <NavUpper>
-                    <div className="desc">
-                      <Binoculars size={32} color="#50B2C0" />
-                      <h2>Explorar</h2>
-                    </div>
-                    <div className="input">
-                      <input type="text" placeholder="Buscar livro ou autor" />
-                      <button type="submit" style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+                    <NavUpper>
+                      <div className="desc">
+                        <Binoculars size={32} color="#50B2C0" />
+                        <h2>Explorar</h2>
+                      </div>
+                      <div className="input">
+                        <input type="text" placeholder="Buscar livro ou autor" value={textInput}  onChange={setQueue} />
+                        <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
-                        <MagnifyingGlass size={20} color="#303F73" />
-                      </button>
-                    </div>
-                  </NavUpper>
-                  <NavDown>
-                    {
-                      categories?.map(({ category }) => {
-                        return (
-                          <Category
-                            key={category.id}
-                            active={category.id == activeCategoryId ? true : false}
-                            onClick={() => handleCategoryClick(category.id)}
-                          >
-                            <p>{category.name}</p>
-                          </Category>
-                        )
-                      })
-                    }
-                  </NavDown>
-                </form>
-              </Navbar>
-              <Main>
-                {
-                  activeBooks?.map((item) => {
-                    
-                    
-                      
+                          <MagnifyingGlass size={20} color="#303F73" />
+                        </button>
+                      </div>
+                    </NavUpper>
+                    <NavDown>
+                      {
+                        categories?.map(({ category }) => {
+                          return (
+                            <Category
+                              key={category.id}
+                              active={category.id == activeCategoryId ? true : false}
+                              onClick={() => handleCategoryClick(category.id)}
+                            >
+                              <p>{category.name}</p>
+                            </Category>
+                          )
+                        })
+                      }
+                    </NavDown>
+                  
+                </Navbar>
+                <Main>
+                  {
+                    activeBooks?.map((item) => {
+
+
+
+
                       return (
+                        <Dialog.Trigger asChild>
 
-                        <Book>
+                          <Book >
 
-                          <div className="left">
-                            <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
-                          </div>
-                          <div className="right">
-                            <div className="upper">
-                              <h4>{item.name}</h4>
-                              <p>{item.author}</p>
+                            <div className="left">
+                              <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
                             </div>
-                            <div className="lower">
-                              {
-                                countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
-                                  star
-                                ))
+                            <div className="right">
+                              <div className="upper">
+                                <h4>{item.name}</h4>
+                                <p>{item.author}</p>
+                              </div>
+                              <div className="lower">
+                                {
+                                  countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
+                                    star
+                                  ))
 
-                              }
+                                }
+                              </div>
                             </div>
-                          </div>
-                        </Book>
+                          </Book>
+                        </Dialog.Trigger>
                       )
-                      
-                    
 
-                  })
-                }
-              </Main>
-            </Content>
+
+
+                    })
+                  }
+                </Main>
+              </Content>
+            </Dialog.Root>
 
           </Container>
         )
