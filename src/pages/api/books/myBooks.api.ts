@@ -41,7 +41,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     select: {
       created_at: true,
       name: true,
-      avatar_url: true
+      avatar_url: true,
+      ratings: {
+        select: {
+          book: {
+            select: {
+              total_pages: true, 
+              categories: {
+                select: {
+                  category: {
+                    select: {
+                      name: true
+                    }
+                  }
+                }
+              },
+              author: true,
+
+            }
+          },
+          rate: true,
+          book_id: true,
+          created_at: true,
+          description: true,
+          id: true,
+          user_id: true
+        }
+      }
     }
   })
 

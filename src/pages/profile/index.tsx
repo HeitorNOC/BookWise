@@ -1,11 +1,10 @@
-import { Container } from "../explore/styles"
 import { BookSection, BookSectionDesc, BookSectionProfile, ContentTitle, SideContentDown, SideContentUpper, Sidebar } from "../home/styles"
 import Image from "next/image";
 import Logo from '../../assets/images/Logo.png'
-import { Binoculars, ChartLineUp, MagnifyingGlass, SignOut, Star, User } from "@phosphor-icons/react";
+import { Binoculars, BookOpen, BookmarkSimple, Books, ChartLineUp, MagnifyingGlass, SignOut, Star, User, UserList } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { Content, Main, Navbar, Right } from "./styles";
+import { Container, Content, Main, Navbar, Right } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 import { formatDistanceToNow, getYear } from "date-fns";
@@ -31,7 +30,31 @@ interface UserInfo {
   created_at: Date | string,
   name: string,
   avatar_url: string
+
   year: number | string
+
+  pagesRead: number
+  authorsRead: number
+  categoryMostRead: string
+  booksRated: number
+
+  ratings: [{
+    id: string
+    rate: number
+    description: string
+    created_at: string
+    book_id: string
+    user_id: string
+    book: {
+      author: string
+      categories: [{
+        category: {
+          name: string
+        }
+      }]
+      total_pages: number
+    }
+  }]
 }
 
 export default function Profile() {
@@ -51,22 +74,74 @@ export default function Profile() {
       setBooks(data[0])
       setProfile(data[1])
       setActiveBooks(data[0])
-
+      
     }
 
     fetchBooks();
   }, [])
 
+  function encontrarPalavraMaisRepetida(arr: string[]): string {
+    // Cria um objeto vazio para armazenar as contagens de cada palavra
+    let contagem: Record<string, number> = {};
+  
+    // Loop para contar cada palavra
+    for (let palavra of arr) {
+      if (contagem[palavra]) {
+        contagem[palavra]++;
+      } else {
+        contagem[palavra] = 1;
+      }
+    }
+  
+    // Variável para armazenar a palavra com o maior valor de contagem
+    let palavraMaisRepetida = arr[0];
+  
+    // Loop para encontrar a palavra com o maior valor de contagem
+    for (let palavra in contagem) {
+      if (contagem[palavra] > contagem[palavraMaisRepetida]) {
+        palavraMaisRepetida = palavra;
+      }
+    }
+  
+    // Retorna a palavra com o maior valor de contagem
+    return palavraMaisRepetida;
+  }
+
   books?.map((item) => {
     const distance = formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })
     item['distance'] = distance
-    console.log(books)
-    console.log(profile)
+
   })
 
   if (profile != undefined) {
     let profileDistance = getYear(new Date(profile.created_at))
     profile['year'] = profileDistance
+
+    let pagesRead = 0
+    let authorsRead: number
+    let categoryMostRead: string
+    let booksRated = profile.ratings.length
+
+    let arrCategories:string[] = []
+    let arrAuthors: string[] = []
+    
+    profile.ratings.map((item) => {
+      pagesRead += item.book.total_pages
+      arrCategories = item.book.categories.map(cat => cat.category.name)
+
+      if (!arrAuthors.includes(item.book.author)) {
+        arrAuthors.push(item.book.author)
+      }
+    })
+    authorsRead = arrAuthors.length
+    categoryMostRead = encontrarPalavraMaisRepetida(arrCategories)
+
+    profile['authorsRead'] = authorsRead
+    profile['booksRated'] = booksRated
+    profile['categoryMostRead'] = categoryMostRead
+    profile['pagesRead'] = pagesRead
+
+    
   }
 
   function queueBooks(text: string) {
@@ -202,7 +277,44 @@ export default function Profile() {
               })}
             </Content>
             <Right>
-
+              <div className="upper">
+                <Image src={profile.avatar_url} alt="avatar" width={72} height={72} style={{ borderRadius: 999 }} />
+                <div className="desc">
+                  <h2>{profile.name}</h2>
+                  <p>Membro desde {profile.year}</p>
+                </div>
+              </div>
+              <div className="mid"></div>
+              <div className="lower">
+                <div className="section">
+                  <BookOpen size={32} color="#50B2C0" />
+                  <div className="description">
+                    <h2>{profile.pagesRead}</h2>
+                    <p>Páginas lidas</p>
+                  </div>
+                </div>
+                <div className="section">
+                  <Books size={32} color="#50B2C0" />
+                  <div className="description">
+                    <h2>{profile.booksRated}</h2>
+                    <p>Livros avaliados</p>
+                  </div>
+                </div>
+                <div className="section">
+                  <UserList size={32} color="#50B2C0" />
+                  <div className="description">
+                    <h2>{profile.authorsRead}</h2>
+                    <p>Autores lidos</p>
+                  </div>
+                </div>
+                <div className="section">
+                  <BookmarkSimple size={32} color="#50B2C0" />
+                  <div className="description">
+                    <h2>{profile.categoryMostRead}</h2>
+                    <p>Categoria mais lida</p>
+                  </div>
+                </div>
+              </div>
             </Right>
 
           </Container>
