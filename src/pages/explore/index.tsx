@@ -3,11 +3,11 @@ import { useRouter } from "next/router"
 import { SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "../home/styles"
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, Star, User, X } from "@phosphor-icons/react";
+import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, Star, StarHalf, User, X } from "@phosphor-icons/react";
 import * as Dialog from '@radix-ui/react-dialog';
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
-import { Content, Main, NavDown, NavUpper, Navbar, Container, Category, Book } from "./styles";
+import { Content, Main, NavDown, NavUpper, Navbar, Container, Category, Book, DialogMain, FieldsetBook, FieldsetRatings } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 
@@ -20,9 +20,16 @@ interface Books {
     rate: number
     description: string
     created_at: string
-    book_id: string
-    user_id: string
+    user: {
+      avatar_url: string
+      created_at: string | Date
+      email: string
+      emailVerified: string | null
+      id: string
+      name: string
+    }
   }]
+  medRate: number
   cover_url: string
   author: string
   categories: [{
@@ -41,7 +48,7 @@ interface Categories {
 
 
 export default function Explore() {
-  
+
 
 
   const [books, setBooks] = useState<Array<Books>>()
@@ -49,7 +56,8 @@ export default function Explore() {
   const [categories, setCategories] = useState<Array<Categories>>()
   const [activeCategoryId, setActiveCategoryId] = useState<String>();
   const [textInput, setTextInput] = useState<string>()
-  
+  const [bookClicked, setBookClicked] = useState<Books>()
+
 
   function handleCategoryClick(categoryId: string) {
     setActiveCategoryId(categoryId);
@@ -63,6 +71,20 @@ export default function Explore() {
 
   }
 
+  function calculateMedRate() {
+    const updatedBooks = books?.map(book => {
+      const totalRates = book.ratings.reduce((accumulator, current) => accumulator + current.rate, 0);
+      const medRate = totalRates / book.ratings.length;
+  
+      return {
+        ...book,
+        medRate
+      };
+    });
+    console.log()
+    setActiveBooks(updatedBooks);
+  }
+
   const router = useRouter()
   const session = useSession()
 
@@ -73,8 +95,9 @@ export default function Explore() {
       setBooks(data[0])
       setCategories(data[1])
       setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
-      setActiveBooks(data[0])
       setActiveCategoryId("0")
+      calculateMedRate()
+      
     }
 
     fetchBooks();
@@ -82,9 +105,9 @@ export default function Explore() {
 
   }, [])
 
-  
 
-  function queueBooks(text:string) {
+
+  function queueBooks(text: string) {
     if (text == '') {
       setActiveBooks(books)
     } else {
@@ -104,14 +127,24 @@ export default function Explore() {
     switch (true) {
       case rate == 0:
         return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 0.5:
+        return [<StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 1:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 1.5:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 2:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 2.5:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 3:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 3.5:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
       case rate == 4:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
+      case rate == 4.5:
+        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />]
       case rate == 5:
         return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
     }
@@ -183,38 +216,38 @@ export default function Explore() {
               </SideContentDown>
             </Sidebar>
             <Content>
-            <Navbar>
-                  
+              <Navbar>
 
-                  <NavUpper>
-                    <div className="desc">
-                      <Binoculars size={32} color="#50B2C0" />
-                      <h2>Explorar</h2>
-                    </div>
-                    <div className="input">
-                      <input type="text" placeholder="Buscar livro ou autor" value={textInput}  onChange={setQueue} />
-                      <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
-                        <MagnifyingGlass size={20} color="#303F73" />
-                      </button>
-                    </div>
-                  </NavUpper>
-                  <NavDown>
-                    {
-                      categories?.map(({ category }) => {
-                        return (
-                          <Category
-                            key={category.id}
-                            active={category.id == activeCategoryId ? true : false}
-                            onClick={() => handleCategoryClick(category.id)}
-                          >
-                            <p>{category.name}</p>
-                          </Category>
-                        )
-                      })
-                    }
-                  </NavDown>
-                
+                <NavUpper>
+                  <div className="desc">
+                    <Binoculars size={32} color="#50B2C0" />
+                    <h2>Explorar</h2>
+                  </div>
+                  <div className="input">
+                    <input type="text" placeholder="Buscar livro ou autor" value={textInput} onChange={setQueue} />
+                    <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+
+                      <MagnifyingGlass size={20} color="#303F73" />
+                    </button>
+                  </div>
+                </NavUpper>
+                <NavDown>
+                  {
+                    categories?.map(({ category }) => {
+                      return (
+                        <Category
+                          key={category.id}
+                          active={category.id == activeCategoryId ? true : false}
+                          onClick={() => handleCategoryClick(category.id)}
+                        >
+                          <p>{category.name}</p>
+                        </Category>
+                      )
+                    })
+                  }
+                </NavDown>
+
               </Navbar>
               <Main>
                 {
@@ -224,29 +257,81 @@ export default function Explore() {
 
 
                     return (
-                      
+                      <Dialog.Root>
+                        <Dialog.Trigger asChild>
 
-                        <Book >
 
-                          <div className="left">
-                            <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
-                          </div>
-                          <div className="right">
-                            <div className="upper">
-                              <h4>{item.name}</h4>
-                              <p>{item.author}</p>
+
+                          <Book onClick={() => setBookClicked(item)}>
+
+                            <div className="left">
+                              <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
                             </div>
-                            <div className="lower">
-                              {
-                                countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
-                                  star
-                                ))
+                            <div className="right">
+                              <div className="upper">
+                                <h4>{item.name}</h4>
+                                <p>{item.author}</p>
+                              </div>
+                              <div className="lower">
+                                {
+                                  countStars(Math.floor(item.medRate))?.map((star) => (
+                                    star
+                                  ))
 
-                              }
+                                }
+                              </div>
                             </div>
-                          </div>
-                        </Book>
-                      
+                          </Book>
+                        </Dialog.Trigger>
+                        <Dialog.Portal>
+                          <DialogOverlay />
+                          <DialogMain>
+
+
+                            <FieldsetBook>
+                              <div className="bookContainer">
+                                <div className="upper">
+                                  <div className="left">
+                                    <Image src={'/' + bookClicked?.cover_url} alt="book" width={172} height={242} />
+                                  </div>
+                                  <div className="right">
+                                    <div className="topDesc">
+                                      <h3>{bookClicked?.name}</h3>
+                                      <p>{bookClicked?.author}</p>
+                                    </div>
+                                    <div className="bottomDesc">
+                                      {
+                                        countStars(Math.floor(bookClicked?.medRate || 0))?.map((star) => (
+                                          star
+                                        ))
+
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="lower">
+                                  <div className="leftDesc"></div>
+                                  <div className="rightDesc"></div>
+                                </div>
+                              </div>
+                            </FieldsetBook>
+                            <FieldsetRatings>
+                              <div className="yourAvaliation">
+
+                              </div>
+                              <div className="otherAvaliations">
+
+                              </div>
+                            </FieldsetRatings>
+
+                            <Dialog.Close asChild>
+                              <IconButton aria-label="Close">
+                                <X size={24} color="#8D95AF" />
+                              </IconButton>
+                            </Dialog.Close>
+                          </DialogMain>
+                        </Dialog.Portal>
+                      </Dialog.Root>
                     )
 
 
@@ -254,7 +339,7 @@ export default function Explore() {
                   })
                 }
               </Main>
-            
+
             </Content>
 
           </Container>
@@ -324,37 +409,37 @@ export default function Explore() {
               </Sidebar>
               <Content>
                 <Navbar>
-                  
 
-                    <NavUpper>
-                      <div className="desc">
-                        <Binoculars size={32} color="#50B2C0" />
-                        <h2>Explorar</h2>
-                      </div>
-                      <div className="input">
-                        <input type="text" placeholder="Buscar livro ou autor" value={textInput}  onChange={setQueue} />
-                        <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
-                          <MagnifyingGlass size={20} color="#303F73" />
-                        </button>
-                      </div>
-                    </NavUpper>
-                    <NavDown>
-                      {
-                        categories?.map(({ category }) => {
-                          return (
-                            <Category
-                              key={category.id}
-                              active={category.id == activeCategoryId ? true : false}
-                              onClick={() => handleCategoryClick(category.id)}
-                            >
-                              <p>{category.name}</p>
-                            </Category>
-                          )
-                        })
-                      }
-                    </NavDown>
-                  
+                  <NavUpper>
+                    <div className="desc">
+                      <Binoculars size={32} color="#50B2C0" />
+                      <h2>Explorar</h2>
+                    </div>
+                    <div className="input">
+                      <input type="text" placeholder="Buscar livro ou autor" value={textInput} onChange={setQueue} />
+                      <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+
+                        <MagnifyingGlass size={20} color="#303F73" />
+                      </button>
+                    </div>
+                  </NavUpper>
+                  <NavDown>
+                    {
+                      categories?.map(({ category }) => {
+                        return (
+                          <Category
+                            key={category.id}
+                            active={category.id == activeCategoryId ? true : false}
+                            onClick={() => handleCategoryClick(category.id)}
+                          >
+                            <p>{category.name}</p>
+                          </Category>
+                        )
+                      })
+                    }
+                  </NavDown>
+
                 </Navbar>
                 <Main>
                   {

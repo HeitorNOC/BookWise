@@ -14,7 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     },
     select: {
-      ratings: true,
+      ratings: {
+        select: {
+          user: true,
+          created_at: true,
+          description: true,
+          rate: true,
+        }
+      },
       author: true,
       categories: true,
       cover_url: true,
