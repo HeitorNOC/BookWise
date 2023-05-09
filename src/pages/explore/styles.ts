@@ -145,34 +145,106 @@ export const Category = styled("div", {
   },
 })
 
-export const DialogMain = styled(DialogContent, {
-  backgroundColor: '$gray700',
+export const DialogMain = styled("div", {
+  //backgroundColor: '$gray800',
+  
+  backgroundColor: '$green100',
   borderRadius: 6,
   boxShadow: 'hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px',
   position: 'fixed',
-  top: '25%',
+  top: '30%',
   left: '30%',
   transform: 'translate(-50%, -50%)',
   //width: '100%',
   maxWidth: '46%',
   maxHeight: '100vh',
-  paddingTop: 64,
-  paddingLeft: 48,
-  paddingRigth: 48,
+  padding: "64px 48px",
+  paddingBottom: 0,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   '&:focus': { outline: 'none' },
   fontFamily: 'Nunito, sans-serif'
 });
 
 export const FieldsetBook = styled('fieldset', {
+  //backgroundColor: '$gray700',
   all: 'unset',
+  background: '$black',
   display: 'flex',
   gap: 20,
   alignItems: 'center',
   marginBottom: 15,
   maxWidth: 564,
+  padding: "24px 32px",
 
-  
+  '.upper': {
+    display: "flex",
+    gap: 32,
+    marginBottom: 40,
+
+    '.right': {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      '.topDesc': {
+
+        h3: {
+          fontWeight: 700,
+          fontSize: 18,
+          lineHeight: "140%",
+          color: "$gray100",
+          
+          marginBottom: 8
+        },
+
+        p: {
+          fontWeight: 400,
+          fontSize: 16,
+          lineHeight: "160%",
+
+          color: "$gray300"
+        }
+      },
+
+      '.bottomDesc': {
+        p: {
+          fontWeight: 400,
+          fontSize: 14,
+          lineHeight: "160%",
+          color: "$gray400",
+          marginTop: 4
+        }
+      }
+    }
+  },
+
+  '.lower': {
+    display: "flex",
+    
+    '.lowerDesc': {
+      display: "flex",
+      padding: "24px 0",
+      alignItems: "center",
+      marginRight: 56,
+
+      div: {
+        marginLeft: 16,
+
+        p: {
+          fontWeight: 400,
+          fontSize: 16,
+          lineHeight: "160%",
+
+          color: "$gray300"
+        },
+
+        h4: {
+          fontWeight: 700,
+          fontSize: 16,
+          lineHeight: "140%",
+        }
+      }
+    }
+  }
 });
 export const FieldsetRatings = styled('fieldset', {
   all: 'unset',
@@ -181,5 +253,6 @@ export const FieldsetRatings = styled('fieldset', {
   alignItems: 'center',
   marginBottom: 15,
   maxWidth: 564,
+  
   
 });

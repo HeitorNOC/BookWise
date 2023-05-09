@@ -23,7 +23,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       },
       author: true,
-      categories: true,
+      categories: {
+        select: {
+          categoryId: true,
+          category: {
+            select: {
+              name: true,
+              
+            }
+          }
+        }
+      },
+      total_pages: true,
       cover_url: true,
       name: true,
     }

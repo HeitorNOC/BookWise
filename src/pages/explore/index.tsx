@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "../home/styles"
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, ChartLineUp, MagnifyingGlass, SignIn, SignOut, Star, StarHalf, User, X } from "@phosphor-icons/react";
+import { Binoculars, BookOpen, BookmarkSimple, ChartLineUp, MagnifyingGlass, SignIn, SignOut, Star, StarHalf, User, X } from "@phosphor-icons/react";
 import * as Dialog from '@radix-ui/react-dialog';
 import Google from '../../assets/images/logos_google-icon.png'
 import Github from '../../assets/images/akar-icons_github-fill.png'
@@ -15,6 +15,7 @@ import { api } from "@/lib/axios";
 
 interface Books {
   name: string
+  total_pages: number
   ratings: [{
     id: string
     rate: number
@@ -33,8 +34,10 @@ interface Books {
   cover_url: string
   author: string
   categories: [{
-    bookId: string
     categoryId: string
+    category: {
+      name: string
+    }
   }]
 }
 
@@ -93,10 +96,12 @@ export default function Explore() {
 
       const { data } = await api.get('/books/explore');
       setBooks(data[0])
+      setActiveBooks(data[0])
       setCategories(data[1])
       setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
       setActiveCategoryId("0")
       calculateMedRate()
+      
       
     }
 
@@ -123,30 +128,30 @@ export default function Explore() {
   }
 
 
-  function countStars(rate: Number) {
+  function countStars(rate: Number, size?: number) {
     switch (true) {
       case rate == 0:
-        return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 0.5:
-        return [<StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<StarHalf size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 1:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 1.5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 2:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 2.5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 3:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 3.5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 4:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} color="#8381D9" />]
       case rate == 4.5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <StarHalf size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} color="#8381D9" />]
       case rate == 5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
+        return [<Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} weight="fill" color="#8381D9" />]
     }
   }
 
@@ -226,7 +231,7 @@ export default function Explore() {
                   </div>
                   <div className="input">
                     <input type="text" placeholder="Buscar livro ou autor" value={textInput} onChange={setQueue} />
-                    <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+                    <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E11size ? size : 16', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
                       <MagnifyingGlass size={20} color="#303F73" />
                     </button>
@@ -274,7 +279,7 @@ export default function Explore() {
                               </div>
                               <div className="lower">
                                 {
-                                  countStars(Math.floor(item.medRate))?.map((star) => (
+                                  countStars(item.medRate)?.map((star) => (
                                     star
                                   ))
 
@@ -301,17 +306,35 @@ export default function Explore() {
                                     </div>
                                     <div className="bottomDesc">
                                       {
-                                        countStars(Math.floor(bookClicked?.medRate || 0))?.map((star) => (
+                                        countStars(bookClicked?.medRate ?? 0, 20)?.map((star) => (
                                           star
                                         ))
 
                                       }
+                                      <p>{item.ratings.length} avaliações</p>
                                     </div>
                                   </div>
                                 </div>
                                 <div className="lower">
-                                  <div className="leftDesc"></div>
-                                  <div className="rightDesc"></div>
+                                  <div className="lowerDesc">
+                                    <BookmarkSimple size={24} color="#50B2C0"/>
+                                    <div>
+                                      <p>Categoria</p>
+                                      <h4>{item.categories.map((e, i) => {
+                                      return (
+                                        `${i == 0 ? `${e.category.name}, `: `${e.category.name}`}`
+                                      )
+                                    })}</h4>
+                                    </div>
+                                    
+                                  </div>
+                                  <div className="lowerDesc">
+                                    <BookOpen size={24} color="#50B2C0"/>
+                                    <div>
+                                      <p>Páginas</p>
+                                      <h4>{bookClicked?.total_pages ? bookClicked.total_pages : 0}</h4>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </FieldsetBook>
@@ -418,7 +441,7 @@ export default function Explore() {
                     </div>
                     <div className="input">
                       <input type="text" placeholder="Buscar livro ou autor" value={textInput} onChange={setQueue} />
-                      <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
+                      <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E11size ? size : 16', position: "absolute", marginLeft: 390, cursor: "pointer" }}>
 
                         <MagnifyingGlass size={20} color="#303F73" />
                       </button>
