@@ -69,9 +69,9 @@ export default function Explore() {
     register,
     handleSubmit,
     formState: { isSubmitting }
-} = useForm<UpdateRatingData>({
+  } = useForm<UpdateRatingData>({
     resolver: zodResolver(updateRatingSchema)
-})
+  })
 
 
 
@@ -88,10 +88,10 @@ export default function Explore() {
 
   async function handleUpdateRating(data: UpdateRatingData) {
     await api.put(`/explore/ratings/${bookClicked?.name}`, {
-        description: data.description,
-        rate: starsClicked
+      description: data.description,
+      rate: starsClicked
     })
-  
+
     await router.reload()
   }
 
@@ -99,47 +99,69 @@ export default function Explore() {
     setActiveCategoryId(categoryId);
     if (categoryId == '0') {
       setActiveBooks(books)
+      calculateMedRate()
     } else {
       let filteredBooks = books?.filter((item) => item.categories.find((category) => category.categoryId == categoryId))
       setActiveBooks(filteredBooks)
+      calculateMedRate(filteredBooks)
 
     }
 
   }
 
-  
+  function calculateMedRate(arr?: any) {
+    if(!arr) {
+
+      const updatedBooks = books?.map(book => {
+        const totalRates = book.ratings.reduce((accumulator, current) => accumulator + current.rate, 0);
+        const medRate = totalRates / book.ratings.length;
+        
+        return {
+          ...book,
+          medRate
+        };
+      });
+      
+      setActiveBooks(updatedBooks);
+    } else {
+      const updatedBooks = arr.map((book:any) => {
+        const totalRates = book.ratings.reduce((accumulator:any, current:any) => accumulator + current.rate, 0);
+        const medRate = totalRates / book.ratings.length;
+
+        return {
+          ...book,
+          medRate
+        }
+      })
+
+      setActiveBooks(updatedBooks)
+    }
+  }
+
 
   const router = useRouter()
   const session = useSession()
 
+
   useEffect(() => {
-    let updatedBooks: any;
     async function fetchBooks() {
 
       const { data } = await api.get('/books/explore');
-      setBooks(data[0]);
-      setActiveBooks(data[0]);
-      updatedBooks = books?.map(book => {
-        const totalRates = book.ratings.reduce((accumulator, current) => accumulator + current.rate, 0);
-        const medRate = totalRates / book.ratings.length;
-        return {
-          ...book,
-          medRate
-      };
-      });
-      setActiveBooks(updatedBooks);
+      setBooks(data[0])
+      setActiveBooks(data[0])
       setCategories(data[1])
       setCategories(prevCategories => [{ category: { id: "0", name: "Tudo" } }, ...prevCategories ?? []])
       setActiveCategoryId("0")
-      
+      calculateMedRate()
+
+
     }
-    
-    
-    
+
     fetchBooks();
+    console.log('oi')
 
 
-  }, [])
+  }, [books?.length])
 
 
 
@@ -148,9 +170,7 @@ export default function Explore() {
       setActiveBooks(books)
       setActiveCategoryId("0")
     } else {
-      let filteredBooks = books?.filter((item) => item.name.includes(text))
-
-      setActiveBooks(filteredBooks)
+      setActiveBooks(books?.filter((item) => item.name.includes(text)))
     }
   }
 
@@ -163,7 +183,7 @@ export default function Explore() {
   function countStars(rate: Number | number, size?: number) {
     switch (true) {
       case rate == 0:
-        return [<Star key={1} size={size ? size : 16}  color="#8381D9" />, <Star key={2} size={size ? size : 16}  color="#8381D9" />, <Star key={3} size={size ? size : 16}  color="#8381D9" />, <Star key={4} size={size ? size : 16}  color="#8381D9" />, <Star key={5} size={size ? size : 16} color="#8381D9" />]
+        return [<Star key={1} size={size ? size : 16} color="#8381D9" />, <Star key={2} size={size ? size : 16} color="#8381D9" />, <Star key={3} size={size ? size : 16} color="#8381D9" />, <Star key={4} size={size ? size : 16} color="#8381D9" />, <Star key={5} size={size ? size : 16} color="#8381D9" />]
       case rate == 0.5:
         return [<StarHalf size={size ? size : 16} key={1} color="#8381D9" />, <Star size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 1:
@@ -223,7 +243,7 @@ export default function Explore() {
   return (
     <>
       {
-          userLoged ? (
+        userLoged ? (
           <Container>
             <Sidebar>
               <SideContentUpper>
@@ -290,7 +310,7 @@ export default function Explore() {
               </Navbar>
               <Main>
                 {
-                  
+
                   activeBooks?.map((item) => {
 
 
@@ -313,7 +333,7 @@ export default function Explore() {
                                 <p>{item.author}</p>
                               </div>
                               <div className="lower">
-                                
+
                                 {
                                   countStars(item.medRate)?.map((star,) => {
                                     return (
@@ -358,11 +378,13 @@ export default function Explore() {
                                     <BookmarkSimple size={24} color="#50B2C0" />
                                     <div>
                                       <p>Categoria</p>
-                                      <h4>{item.categories.map((e, i) => {
+                                      {item.categories.map((e, i) => {
                                         return (
-                                          `${i == 0 ? `${e.category.name}, ` : `${e.category.name}`}`
+                                          <h4 key={i}>
+                                            `${i == 0 ? `${e.category.name}, ` : `${e.category.name}`}`
+                                          </h4>
                                         )
-                                      })}</h4>
+                                      })}
                                     </div>
 
                                   </div>
@@ -391,7 +413,7 @@ export default function Explore() {
                                       countStars(starsClicked, 28)?.map((star, i) => {
 
                                         return (
-                                          <div className="star" style={{ cursor: "pointer" }} onClick={() => setStarsClicked(i + 1)}>
+                                          <div key={i} className="star" style={{ cursor: "pointer" }} onClick={() => setStarsClicked(i + 1)}>
                                             {star}
                                           </div>
                                         )
@@ -402,7 +424,7 @@ export default function Explore() {
                                 <form onSubmit={handleSubmit(handleUpdateRating)}>
 
                                   <div className="form">
-                                    <input {...register('description')} type="text" value={inputControlled} onChange={e => { setCaracterCount(e.target.value.length); setInputControlled(e.target.value) }} placeholder="Escreva sua avaliação"  />
+                                    <input {...register('description')} type="text" value={inputControlled} onChange={e => { setCaracterCount(e.target.value.length); setInputControlled(e.target.value) }} placeholder="Escreva sua avaliação" />
                                     <span>{caracterCount}/450</span>
                                   </div>
                                   <div className="lower">
@@ -418,12 +440,12 @@ export default function Explore() {
                                 </form>
 
                               </div>
-                              <div style={{width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px"}}></div>
+                              <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px" }}></div>
                               <div className="otherAvaliations">
                                 {
                                   item.ratings.map((rating) => {
                                     return (
-                                      <div className="otherAvaliation">
+                                      <div key={rating.id} className="otherAvaliation">
                                         <div className="upper">
                                           <div className="profile">
                                             <Image src={rating.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
@@ -452,7 +474,7 @@ export default function Explore() {
 
 
 
-                                        <div style={{width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px"}}></div>
+                                        <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px" }}></div>
                                       </div>
                                     )
                                   })
@@ -473,7 +495,7 @@ export default function Explore() {
 
 
                   })
-                } 
+                }
               </Main>
 
             </Content>
