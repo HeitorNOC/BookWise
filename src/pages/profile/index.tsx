@@ -230,7 +230,7 @@ export default function Profile() {
                 </div>
                 <div className="lower">
                   <div className="input">
-                    <input type="text" placeholder="Buscar livro ou autor" value={textInput} onChange={setQueue} />
+                    <input type="text" placeholder="Buscar livro" value={textInput} onChange={setQueue} />
                     <button type="submit" onClick={() => queueBooks(textInput ? textInput : '')} style={{ borderStyle: "none", background: '#0E1116', position: "absolute", marginLeft: 580, cursor: "pointer" }}>
 
                       <MagnifyingGlass size={20} color="#303F73" />

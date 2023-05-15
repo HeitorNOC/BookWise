@@ -448,7 +448,7 @@ export default function Explore() {
                                 </form>
 
                               </div>
-                              <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px" }}></div>
+                              
                               <div className="otherAvaliations" >
                                 {
                                   item.ratings.map((rating) => {
