@@ -180,6 +180,10 @@ export default function Profile() {
     router.push('/home')
   }
 
+  function handleExplore() {
+    router.push('/explore')
+  }
+
   async function handleLogOut() {
     await signOut({ callbackUrl: '/' })
   }
@@ -199,8 +203,8 @@ export default function Profile() {
                     <ChartLineUp size={24} />
                     <p> Início</p>
                   </div>
-                  <div >
-                    <Binoculars size={24} />
+                  <div onClick={handleExplore}>
+                    <Binoculars size={24}  />
                     <p>Explorar</p>
                   </div>
                   <div className="selected2">
