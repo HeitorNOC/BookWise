@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 interface Books {
   name: string
+  id: string
   total_pages: number
   ratings: [{
     id: string
@@ -57,7 +58,6 @@ interface Categories {
 
 const updateRatingSchema = z.object({
   description: z.string(),
-  rate: z.number()
 })
 
 type UpdateRatingData = z.infer<typeof updateRatingSchema>
@@ -87,12 +87,13 @@ export default function Explore() {
   const [caracterCount, setCaracterCount] = useState(inputControlled ? inputControlled?.toString.length : 0)
 
   async function handleUpdateRating(data: UpdateRatingData) {
-    await api.put(`/explore/ratings/${bookClicked?.name}`, {
+    
+     await api.put(`/books/ratings/${bookClicked?.id}`, {
       description: data.description,
       rate: starsClicked
     })
 
-    await router.reload()
+    router.reload() 
   }
 
   function handleCategoryClick(categoryId: string) {
@@ -110,22 +111,22 @@ export default function Explore() {
   }
 
   function calculateMedRate(arr?: any) {
-    if(!arr) {
+    if (!arr) {
 
       const updatedBooks = books?.map(book => {
         const totalRates = book.ratings.reduce((accumulator, current) => accumulator + current.rate, 0);
         const medRate = totalRates / book.ratings.length;
-        
+
         return {
           ...book,
           medRate
         };
       });
-      
+
       setActiveBooks(updatedBooks);
     } else {
-      const updatedBooks = arr.map((book:any) => {
-        const totalRates = book.ratings.reduce((accumulator:any, current:any) => accumulator + current.rate, 0);
+      const updatedBooks = arr.map((book: any) => {
+        const totalRates = book.ratings.reduce((accumulator: any, current: any) => accumulator + current.rate, 0);
         const medRate = totalRates / book.ratings.length;
 
         return {
@@ -158,11 +159,12 @@ export default function Explore() {
     }
 
     fetchBooks();
-    console.log('oi')
+    
 
 
   }, [books?.length])
 
+  
 
 
   function queueBooks(text: string) {
@@ -239,6 +241,9 @@ export default function Explore() {
   }
 
   let userLoged = session.data?.user ? true : false
+
+  const onSubmit = (data:any, e:any) => console.log(data, e);
+  const onError = (errors:any, e:any) => console.log(errors, e);
 
   return (
     <>
@@ -378,13 +383,16 @@ export default function Explore() {
                                     <BookmarkSimple size={24} color="#50B2C0" />
                                     <div>
                                       <p>Categoria</p>
-                                      {item.categories.map((e, i) => {
-                                        return (
-                                          <h4 key={i}>
-                                            `${i == 0 ? `${e.category.name}, ` : `${e.category.name}`}`
-                                          </h4>
-                                        )
-                                      })}
+                                      <div className="catDesc" style={{ display: "flex", gap: 4 }}>
+
+                                        {item.categories.map((e, i) => {
+                                          return (
+                                            <h4 key={i}>
+                                              {`${i == 0 ? `${e.category.name}, ` : `${e.category.name}`}`}
+                                            </h4>
+                                          )
+                                        })}
+                                      </div>
                                     </div>
 
                                   </div>
@@ -432,20 +440,21 @@ export default function Explore() {
 
                                       <X size={24} color="#8381D9" />
                                     </div>
-                                    <div className="icon" aria-disabled={isSubmitting}>
+                                    <button type="submit" className="icon" disabled={isSubmitting}>
 
                                       <Check size={24} color="#50B2C0" />
-                                    </div>
+                                    </button>
                                   </div>
                                 </form>
 
                               </div>
                               <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px" }}></div>
-                              <div className="otherAvaliations">
+                              <div className="otherAvaliations" >
                                 {
                                   item.ratings.map((rating) => {
                                     return (
                                       <div key={rating.id} className="otherAvaliation">
+                                        <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px", marginBottom: 20}}></div>
                                         <div className="upper">
                                           <div className="profile">
                                             <Image src={rating.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
@@ -474,7 +483,7 @@ export default function Explore() {
 
 
 
-                                        <div style={{ width: 629 + 100, height: 12, backgroundColor: "#0E1116", marginLeft: "-50px" }}></div>
+                                        
                                       </div>
                                     )
                                   })

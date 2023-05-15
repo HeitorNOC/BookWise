@@ -22,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           rate: true,
         }
       },
+      id: true,
       author: true,
       categories: {
         select: {
