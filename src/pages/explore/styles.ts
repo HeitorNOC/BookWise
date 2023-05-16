@@ -103,6 +103,10 @@ export const NavUpper = styled("div", {
       },
 
 
+    },
+    button: {
+      border: "none",
+      background: '#0E1116',
     }
   },
 })

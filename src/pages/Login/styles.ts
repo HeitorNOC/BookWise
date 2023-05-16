@@ -1,22 +1,25 @@
 import { styled } from "@stitches/react";
 
 export const Container = styled('div', {
-  maxWidth: 1440,
+  maxWidth: "100vw",
   maxHeight: "100vh",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  overflow: "hidden"
+  overflow: "hidden",
 })
 
 export const Left = styled('div', {
-  padding: "20px 0 15px 20px",
+  display: "flex",
+  alignItems: "center",
+  padding: "80px 0 15px 20px",
 })
 
 export const Right = styled('div', {
   display: "flex",
   alignItems: "center",
-  justifyContent: "center"
+  justifyContent: "center",
+  paddingRight: 450
 })
 
 export const Options = styled('div', {

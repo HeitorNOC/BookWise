@@ -171,8 +171,11 @@ export default function Explore() {
     if (text == '') {
       setActiveBooks(books)
       setActiveCategoryId("0")
+      calculateMedRate()
     } else {
-      setActiveBooks(books?.filter((item) => item.name.includes(text)))
+      let filteredBooks = books?.filter((item) => item.name.includes(text))
+      setActiveBooks(filteredBooks)
+      calculateMedRate(filteredBooks)
     }
   }
 

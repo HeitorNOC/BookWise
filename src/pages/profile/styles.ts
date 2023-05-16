@@ -25,6 +25,7 @@ export const Navbar = styled("div", {
       marginBottom: 32,
 
       input: {
+        
         background: '#0E1116',
         padding: '14px 20px',
         border: '1px solid #303F73',
@@ -46,7 +47,9 @@ export const Navbar = styled("div", {
         },
 
 
-      }
+      },
+
+      
     },
   },
   '.upper': {
