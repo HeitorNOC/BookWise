@@ -8,7 +8,7 @@ import Image from "next/image";
 import { signIn, signOut, useSession } from 'next-auth/react'
 import {  useRouter } from "next/router";
 
-export default function Login() {
+export default function Register() {
   const router = useRouter()
   const session = useSession()
   
