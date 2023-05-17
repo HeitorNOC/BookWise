@@ -619,7 +619,7 @@ export default function Explore() {
 
 
                       return (
-                        <Dialog.Trigger asChild>
+                        <Dialog.Trigger asChild key={item.name}>
 
                           <Book key={item.id}>
 
@@ -633,7 +633,7 @@ export default function Explore() {
                               </div>
                               <div className="lower">
                                 {
-                                  countStars(Math.floor(item.ratings[0].rate))?.map((star) => (
+                                  countStars(item.medRate)?.map((star) => (
                                     star
                                   ))
 
