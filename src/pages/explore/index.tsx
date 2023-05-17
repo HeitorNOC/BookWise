@@ -621,7 +621,7 @@ export default function Explore() {
                       return (
                         <Dialog.Trigger asChild>
 
-                          <Book >
+                          <Book key={item.id}>
 
                             <div className="left">
                               <Image src={'/' + item.cover_url} alt="book" width={100} height={152} />
