@@ -4,6 +4,7 @@ import { categories } from './constants/categories'
 import { ratings } from './constants/ratings'
 import { users } from './constants/users'
 import { formatISO9075 } from 'date-fns'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 const prisma = new PrismaClient()
 
 async function main() {
@@ -58,6 +59,7 @@ async function main() {
       },
     })
   })
+  
 
   const ratingsSeed = ratings.map((rating) => {
     const dateString = new Date().toUTCString();
