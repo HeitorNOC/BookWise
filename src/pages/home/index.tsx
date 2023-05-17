@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { BookSection, BookSectionDesc, BookSectionProfile, Container, Content, ContentTitle, Right, RightBook, RightDesc, SideContentDown, SideContentUpper, Sidebar, Button, DialogOverlay, DialogContent, DialogTitle, Fieldset, IconButton } from "./styles";
 import Logo from '../../assets/images/Logo.png'
 import Image from "next/image";
-import { Binoculars, CaretRight, ChartLineUp, SignIn, SignOut, Star, User, X } from '@phosphor-icons/react'
+import { Binoculars, CaretRight, ChartLineUp, SignIn, SignOut, Star, StarHalf, User, X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog';
 
 
@@ -146,20 +146,30 @@ export default function Home() {
   }
 
 
-  function countStars(rate: Number) {
+  function countStars(rate: Number | number, size?: number) {
     switch (true) {
       case rate == 0:
-        return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star key={1} size={size ? size : 16} color="#8381D9" />, <Star key={2} size={size ? size : 16} color="#8381D9" />, <Star key={3} size={size ? size : 16} color="#8381D9" />, <Star key={4} size={size ? size : 16} color="#8381D9" />, <Star key={5} size={size ? size : 16} color="#8381D9" />]
+      case rate == 0.5:
+        return [<StarHalf size={size ? size : 16} key={1} color="#8381D9" />, <Star size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 1:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 1.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 2:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 2.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 3:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 3.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 4:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 4.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={5} weight="fill" color="#8381D9" />]
     }
   }
 
@@ -244,7 +254,7 @@ export default function Home() {
                 books?.map((item, index) => {
                   if (index <= 2) {
                     return (
-                      <BookSection>
+                      <BookSection key={index}>
                         <BookSectionProfile>
                           <div>
                             <Image src={item.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
@@ -287,9 +297,9 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               {
-                popBooks?.map((actualItem) => {
+                popBooks?.map((actualItem, i) => {
                   return (
-                    <RightBook>
+                    <RightBook key={i}>
                       <Image src={'/' + actualItem.cover_url} alt="Book" width={64} height={94} />
                       <div className="flex">
                         <div>
@@ -385,9 +395,9 @@ export default function Home() {
 
                 <p>Avaliações mais recentes</p>
               </ContentTitle>
-              {books?.map((item) => {
+              {books?.map((item, i) => {
                 return (
-                  <BookSection>
+                  <BookSection key={i}>
                     <BookSectionProfile>
                       <div>
                         <Image src={item.user.avatar_url} alt="avatar" width={40} height={40} style={{ borderRadius: 999 }} />
@@ -428,9 +438,9 @@ export default function Home() {
                 <p className="arrow">Ver todos <CaretRight size={16} color="#8381D9" /></p>
               </RightDesc>
               {
-                popBooks?.map((actualItem) => {
+                popBooks?.map((actualItem, i) => {
                   return (
-                    <RightBook>
+                    <RightBook key={i}>
                       <Image src={'/' + actualItem.cover_url} alt="Book" width={64} height={94} />
                       <div className="flex">
                         <div>

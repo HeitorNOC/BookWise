@@ -1,7 +1,7 @@
 import { BookSection, BookSectionDesc, BookSectionProfile, ContentTitle, SideContentDown, SideContentUpper, Sidebar } from "../home/styles"
 import Image from "next/image";
 import Logo from '../../assets/images/Logo.png'
-import { Binoculars, BookOpen, BookmarkSimple, Books, ChartLineUp, MagnifyingGlass, SignOut, Star, User, UserList } from "@phosphor-icons/react";
+import { Binoculars, BookOpen, BookmarkSimple, Books, ChartLineUp, MagnifyingGlass, SignOut, Star, StarHalf, User, UserList } from "@phosphor-icons/react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { Container, Content, Main, Navbar, Right } from "./styles";
@@ -154,20 +154,30 @@ export default function Profile() {
     }
   }
 
-  function countStars(rate: Number) {
+  function countStars(rate: Number | number, size?: number) {
     switch (true) {
       case rate == 0:
-        return [<Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star key={1} size={size ? size : 16} color="#8381D9" />, <Star key={2} size={size ? size : 16} color="#8381D9" />, <Star key={3} size={size ? size : 16} color="#8381D9" />, <Star key={4} size={size ? size : 16} color="#8381D9" />, <Star key={5} size={size ? size : 16} color="#8381D9" />]
+      case rate == 0.5:
+        return [<StarHalf size={size ? size : 16} key={1} color="#8381D9" />, <Star size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 1:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 1.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={2} color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 2:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 2.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={3} color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 3:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 3.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={4} color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 4:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={5} color="#8381D9" />]
+      case rate == 4.5:
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <StarHalf size={size ? size : 16} key={5} color="#8381D9" />]
       case rate == 5:
-        return [<Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />, <Star size={16} weight="fill" color="#8381D9" />]
+        return [<Star size={size ? size : 16} key={1} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={2} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={3} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={4} weight="fill" color="#8381D9" />, <Star size={size ? size : 16} key={5} weight="fill" color="#8381D9" />]
     }
   }
 
@@ -238,9 +248,9 @@ export default function Profile() {
                   </div>
                 </div>
               </Navbar>
-              {activeBooks?.map((item) => {
+              {activeBooks?.map((item, i) => {
                 return (
-                  <Main>
+                  <Main key={i}>
                     <ContentTitle>
                       <p>{item.distance}</p>
                     </ContentTitle>
