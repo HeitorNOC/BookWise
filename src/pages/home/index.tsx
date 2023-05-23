@@ -178,7 +178,7 @@ export default function Home() {
   return (
     <>
       {
-        session.data && lastBookRating != undefined ? (
+        session.data && lastBookRating != undefined && lastBookRating.length > 0  ? (
           <Container>
             <Sidebar>
               <SideContentUpper>

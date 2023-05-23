@@ -3,16 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
+  provider     = "sqlite"
+  url          = env("DATABASE_URL")
+  //shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
   id            String    @id @default(uuid())
   name          String
-  avatar_url    String?   @db.VarChar(255)
+  avatar_url    String?
   created_at    DateTime  @default(now())
   email         String    @unique
   emailVerified DateTime?
@@ -27,8 +27,8 @@ model Book {
   id          String   @id @default(uuid())
   name        String
   author      String
-  summary     String   @db.VarChar(500)
-  cover_url   String   @db.VarChar(255)
+  summary     String
+  cover_url   String
   total_pages Int
   created_at  DateTime @default(now())
 
@@ -62,9 +62,9 @@ model CategoriesOnBooks {
 model Rating {
   id          String @id @default(uuid())
   rate        Int
-  description String @db.VarChar(500)
+  description String
 
-  created_at String @db.VarChar(200)
+  created_at String
 
   book    Book   @relation(fields: [book_id], references: [id])
   book_id String
@@ -88,7 +88,7 @@ model Account {
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
